@@ -111,6 +111,25 @@ export const CONTAINER_ANIMATIONS: Record<ContainerAnimationType, string | null>
       }
     }
   `,
+  'drop-shadow': `
+    @keyframes css-mesh-container-drop-shadow {
+      0% { 
+        filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
+      }
+      25% { 
+        filter: drop-shadow(6px 6px 12px rgba(0, 0, 0, 0.4));
+      }
+      50% { 
+        filter: drop-shadow(4px 8px 16px rgba(0, 0, 0, 0.5));
+      }
+      75% { 
+        filter: drop-shadow(8px 4px 12px rgba(0, 0, 0, 0.4));
+      }
+      100% { 
+        filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
+      }
+    }
+  `,
 };
 
 // Keyframe generators for ellipse animations
@@ -216,6 +235,9 @@ export const getContainerAnimationStyles = (
       break;
     case 'hue-rotation':
       animationName = 'css-mesh-container-hue-rotation';
+      break;
+    case 'drop-shadow':
+      animationName = 'css-mesh-container-drop-shadow';
       break;
   }
   

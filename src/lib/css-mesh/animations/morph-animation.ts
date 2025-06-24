@@ -12,20 +12,24 @@ export const MORPH_ANIMATION: AnimationDefinition = {
       transform: 'translate3d(0, 0, 0) scale(1) rotate(0deg)',
     },
     {
-      percent: 25,
-      transform: 'translate3d(2%, 1%, 0) scale(1.05) rotate(90deg)',
+      percent: 20,
+      transform: 'translate3d(2%, 1%, 0) scale(1.05) rotate(20deg)',
     },
     {
-      percent: 50,
-      transform: 'translate3d(1%, -2%, 0) scale(0.97) rotate(180deg)',
+      percent: 40,
+      transform: 'translate3d(1%, -2%, 0) scale(0.97) rotate(10deg)',
     },
     {
-      percent: 75,
-      transform: 'translate3d(-1.5%, 0.5%, 0) scale(1.02) rotate(270deg)',
+      percent: 60,
+      transform: 'translate3d(-1.5%, 0.5%, 0) scale(1.02) rotate(-10deg)',
+    },
+    {
+      percent: 80,
+      transform: 'translate3d(-0.5%, 1.5%, 0) scale(1.01) rotate(-20deg)',
     },
     {
       percent: 100,
-      transform: 'translate3d(0, 0, 0) scale(1) rotate(360deg)',
+      transform: 'translate3d(0, 0, 0) scale(1) rotate(0deg)',
     },
   ],
 };
@@ -38,17 +42,20 @@ export const generateMorphKeyframes = (intensity: number = 1): string => {
       0% { 
         transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
       }
-      25% { 
-        transform: translate3d(${2 * i}%, ${1 * i}%, 0) scale(${1 + 0.05 * i}) rotate(${90 * i}deg);
+      20% { 
+        transform: translate3d(${2 * i}%, ${1 * i}%, 0) scale(${1 + 0.05 * i}) rotate(${20 * i}deg);
       }
-      50% { 
-        transform: translate3d(${1 * i}%, ${-2 * i}%, 0) scale(${1 - 0.03 * i}) rotate(${180 * i}deg);
+      40% { 
+        transform: translate3d(${1 * i}%, ${-2 * i}%, 0) scale(${1 - 0.03 * i}) rotate(${10 * i}deg);
       }
-      75% { 
-        transform: translate3d(${-1.5 * i}%, ${0.5 * i}%, 0) scale(${1 + 0.02 * i}) rotate(${270 * i}deg);
+      60% { 
+        transform: translate3d(${-1.5 * i}%, ${0.5 * i}%, 0) scale(${1 + 0.02 * i}) rotate(${-10 * i}deg);
+      }
+      80% { 
+        transform: translate3d(${-0.5 * i}%, ${1.5 * i}%, 0) scale(${1 + 0.01 * i}) rotate(${-20 * i}deg);
       }
       100% { 
-        transform: translate3d(0, 0, 0) scale(1) rotate(${360 * i}deg);
+        transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
       }
     }
   `;

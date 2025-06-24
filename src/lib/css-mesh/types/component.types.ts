@@ -34,6 +34,15 @@ export interface MeshGradientProps {
   // Orb-specific props
   shape?: 'background' | 'orb';
   size?: number | 'sm' | 'md' | 'lg';
+  // Visual enhancement props
+  dropShadow?: number | boolean;
+  dropShadowOpacity?: number;
+  dropShadowDirection?: { x: number; y: number };
+  lighting3d?: {
+    enabled: boolean;
+    position?: { x: number; y: number };
+    intensity?: number;
+  };
 }
 
 // Demo component props

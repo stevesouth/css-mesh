@@ -27,6 +27,14 @@ interface CodeGeneratorProps {
   mainTextColor: string;
   showOrbMode?: boolean;
   orbSize?: number;
+  dropShadow?: number | boolean;
+  dropShadowOpacity?: number;
+  dropShadowDirection?: { x: number; y: number };
+  lighting3d?: {
+    enabled: boolean;
+    position?: { x: number; y: number };
+    intensity?: number;
+  };
 }
 
 const CodeGenerator: React.FC<CodeGeneratorProps> = ({
@@ -44,6 +52,10 @@ const CodeGenerator: React.FC<CodeGeneratorProps> = ({
   mainTextColor,
   showOrbMode = false,
   orbSize = 80,
+  dropShadow = false,
+  dropShadowOpacity = 0.4,
+  dropShadowDirection = { x: 0, y: 8 },
+  lighting3d = { enabled: false },
 }) => {
   const [generatedCode, setGeneratedCode] = useState('');
   
@@ -69,6 +81,10 @@ const CodeGenerator: React.FC<CodeGeneratorProps> = ({
 
     const hasContainerAnimation = containerAnimation !== 'none';
     const hasMouseTracking = mouseTracking.enabled;
+    const hasDropShadow = dropShadow !== false;
+    const hasLighting3d = lighting3d.enabled;
+    const hasDropShadowOpacity = hasDropShadow && dropShadowOpacity !== 0.4;
+    const hasDropShadowDirection = hasDropShadow && (dropShadowDirection.x !== 0 || dropShadowDirection.y !== 8);
 
     if (showCustom && customConfig) {
       const codeConfig = {
@@ -88,6 +104,15 @@ const CodeGenerator: React.FC<CodeGeneratorProps> = ({
       }
       if (hasVisualEffects) {
         additionalConfigs.push(`const visualEffects = ${JSON.stringify(visualEffects, null, 2)};`);
+      }
+      if (hasDropShadow) {
+        additionalConfigs.push(`const dropShadow = ${typeof dropShadow === 'number' ? dropShadow : 'true'};`);
+        if (hasDropShadowDirection) {
+          additionalConfigs.push(`const dropShadowDirection = ${JSON.stringify(dropShadowDirection, null, 2)};`);
+        }
+      }
+      if (hasLighting3d) {
+        additionalConfigs.push(`const lighting3d = ${JSON.stringify(lighting3d, null, 2)};`);
       }
 
       const propsArray = [];
@@ -110,6 +135,18 @@ const CodeGenerator: React.FC<CodeGeneratorProps> = ({
       }
       if (hasVisualEffects) {
         propsArray.push(`visualEffects={visualEffects}`);
+      }
+      if (hasDropShadow) {
+        propsArray.push(`dropShadow={dropShadow}`);
+        if (hasDropShadowOpacity) {
+          propsArray.push(`dropShadowOpacity={${dropShadowOpacity}}`);
+        }
+        if (hasDropShadowDirection) {
+          propsArray.push(`dropShadowDirection={dropShadowDirection}`);
+        }
+      }
+      if (hasLighting3d) {
+        propsArray.push(`lighting3d={lighting3d}`);
       }
       propsArray.push(`customConfig={customConfig}`);
 
@@ -183,6 +220,30 @@ const customConfig = ${JSON.stringify(codeConfig, null, 2)};${additionalConfigs.
   }}`);
       }
 
+      // Add drop shadow if enabled
+      if (hasDropShadow) {
+        if (typeof dropShadow === 'number') {
+          basicProps.push(`dropShadow={${dropShadow}}`);
+        } else {
+          basicProps.push(`dropShadow={true}`);
+        }
+        if (hasDropShadowOpacity) {
+          basicProps.push(`dropShadowOpacity={${dropShadowOpacity}}`);
+        }
+        if (hasDropShadowDirection) {
+          basicProps.push(`dropShadowDirection={{ x: ${dropShadowDirection.x}, y: ${dropShadowDirection.y} }}`);
+        }
+      }
+
+      // Add 3D lighting if enabled
+      if (hasLighting3d) {
+        basicProps.push(`lighting3d={{
+    enabled: ${lighting3d.enabled},
+    position: { x: ${lighting3d.position?.x || 30}, y: ${lighting3d.position?.y || 30} },
+    intensity: ${lighting3d.intensity || 0.3}
+  }}`);
+      }
+
       // Only show <MeshGradient> if we have props, otherwise show minimal version
       if (basicProps.length === 0) {
         return `// Minimal Usage
@@ -218,7 +279,7 @@ import { MeshGradient } from 'css-mesh';
 
   useEffect(() => {
     setGeneratedCode(generateCode());
-  }, [selectedTheme, isAnimated, animationType, animationSpeed, animationIntensity, containerAnimation, containerAnimationSpeed, mouseTracking, visualEffects, showCustom, customConfig, showOrbMode, orbSize]);
+  }, [selectedTheme, isAnimated, animationType, animationSpeed, animationIntensity, containerAnimation, containerAnimationSpeed, mouseTracking, visualEffects, showCustom, customConfig, showOrbMode, orbSize, dropShadow, dropShadowOpacity, dropShadowDirection, lighting3d]);
 
   const cardStyle: React.CSSProperties = {
     backgroundColor: 'rgba(255, 255, 255, 0.1)',

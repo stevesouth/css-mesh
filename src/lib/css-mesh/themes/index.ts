@@ -22,6 +22,9 @@ export const ALL_THEMES: ThemeCollection = {
   fireCore: ORB_THEMES.fireCore,
   deepSpace: ORB_THEMES.deepSpace,
   shadowGlow: ORB_THEMES.shadowGlow,
+  sunsetGlow: ORB_THEMES.sunsetGlow,
+  twilightDark: ORB_THEMES.twilightDark,
+  midnightGlow: ORB_THEMES.midnightGlow,
   
   shapes: {
     backgroundColor: '#1a1a2e',
@@ -94,6 +97,7 @@ export const ALL_THEMES: ThemeCollection = {
   roseDawn: ORB_THEMES.roseDawn,
   mintFresh: ORB_THEMES.mintFresh,
   lavenderMist: ORB_THEMES.lavenderMist,
+  dawnLight: ORB_THEMES.dawnLight,
   lavender: {
     backgroundColor: '#f8f4ff',
     shapes: [
@@ -182,14 +186,15 @@ export const THEME_NAMES = Object.keys(ALL_THEMES) as string[];
 export const DARK_THEMES = [
   'sunset', 'ocean', 'aurora', 'cosmic', 'forest', 'monochrome', 
   'volcanic', 'electric', 'neon', 'cyberpunk', 'voidPulse', 
-  'fireCore', 'deepSpace', 'shadowGlow', 'shapes'
+  'fireCore', 'deepSpace', 'shadowGlow', 'sunsetGlow', 'twilightDark', 
+  'midnightGlow', 'shapes'
 ];
 
 // Light themes (includes orb themes)
 export const LIGHT_THEMES = [
   'minimal', 'dreamy', 'spring', 'sky', 'cream', 'dawn', 
   'pearl', 'blush', 'crystalBlue', 'sunbeam', 'roseDawn', 
-  'mintFresh', 'lavenderMist', 'lavender', 'mint'
+  'mintFresh', 'lavenderMist', 'dawnLight', 'lavender', 'mint'
 ];
 
 // Helper function to get a theme by name

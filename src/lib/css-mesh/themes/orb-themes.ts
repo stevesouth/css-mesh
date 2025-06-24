@@ -13,6 +13,9 @@ export const ORB_THEMES: ThemeCollection = {
       brightness: 1.0,
       hue: 0,
     },
+    lighting3d: {
+      enabled: true,
+    },
     shapes: [
       {
         id: 'cyberpunk-1',
@@ -68,6 +71,9 @@ export const ORB_THEMES: ThemeCollection = {
       contrast: 1.5,
       brightness: 1.0,
       hue: 0,
+    },
+    lighting3d: {
+      enabled: true,
     },
     shapes: [
       {
@@ -125,6 +131,9 @@ export const ORB_THEMES: ThemeCollection = {
       brightness: 1.0,
       hue: 0,
     },
+    lighting3d: {
+      enabled: true,
+    },
     shapes: [
       {
         id: 'fire-1',
@@ -181,6 +190,9 @@ export const ORB_THEMES: ThemeCollection = {
       brightness: 1.0,
       hue: 0,
     },
+    lighting3d: {
+      enabled: true,
+    },
     shapes: [
       {
         id: 'space-1',
@@ -236,6 +248,9 @@ export const ORB_THEMES: ThemeCollection = {
       contrast: 1.5,
       brightness: 1.0,
       hue: 0,
+    },
+    lighting3d: {
+      enabled: true,
     },
     shapes: [
       {
@@ -295,6 +310,9 @@ export const ORB_THEMES: ThemeCollection = {
       brightness: 1.0,
       hue: 0,
     },
+    lighting3d: {
+      enabled: true,
+    },
     shapes: [
       {
         id: 'crystal-1',
@@ -350,6 +368,9 @@ export const ORB_THEMES: ThemeCollection = {
       contrast: 1.5,
       brightness: 1.0,
       hue: 0,
+    },
+    lighting3d: {
+      enabled: true,
     },
     shapes: [
       {
@@ -407,6 +428,9 @@ export const ORB_THEMES: ThemeCollection = {
       brightness: 1.0,
       hue: 0,
     },
+    lighting3d: {
+      enabled: true,
+    },
     shapes: [
       {
         id: 'rose-1',
@@ -462,6 +486,9 @@ export const ORB_THEMES: ThemeCollection = {
       contrast: 1.5,
       brightness: 1.0,
       hue: 0,
+    },
+    lighting3d: {
+      enabled: true,
     },
     shapes: [
       {
@@ -519,6 +546,9 @@ export const ORB_THEMES: ThemeCollection = {
       brightness: 1.0,
       hue: 0,
     },
+    lighting3d: {
+      enabled: true,
+    },
     shapes: [
       {
         id: 'lavender-1',
@@ -562,6 +592,252 @@ export const ORB_THEMES: ThemeCollection = {
         gradient: 'radial-gradient(circle, #8b5cf6 0%, #6366f1 100%)',
         blur: 12,
         opacity: 0.85,
+        zIndex: 4,
+      },
+    ],
+  },
+
+  // NEW PREMIUM ORB THEMES - Enhanced Sunset Variations
+
+  sunsetGlow: {
+    backgroundColor: '#1a0f0a',
+    visualEffects: {
+      saturation: 3,
+      contrast: 2,
+      brightness: 2,
+      hue: 0,
+    },
+    lighting3d: {
+      enabled: true,
+      position: { x: 75, y: 15 },
+      intensity: 0.85,
+    },
+    shapes: [
+      {
+        id: 'sunset-glow-1',
+        width: 85,
+        height: 85,
+        x: -22,
+        y: -22,
+        gradient: 'radial-gradient(circle, #ff6b35 0%, #f7931e 30%, #ff4757 70%, #c44569 100%)',
+        blur: 15,
+        opacity: 0.9,
+        zIndex: 1,
+      },
+      {
+        id: 'sunset-glow-2',
+        width: 80,
+        height: 80,
+        x: 40,
+        y: -20,
+        gradient: 'radial-gradient(circle, #ffa502 0%, #ff6348 50%, #ff4757 100%)',
+        blur: 12,
+        opacity: 0.85,
+        zIndex: 2,
+      },
+      {
+        id: 'sunset-glow-3',
+        width: 80,
+        height: 80,
+        x: -20,
+        y: 40,
+        gradient: 'radial-gradient(circle, #ffdd59 0%, #ffa502 60%, #ff6b35 100%)',
+        blur: 12,
+        opacity: 0.85,
+        zIndex: 3,
+      },
+      {
+        id: 'sunset-glow-4',
+        width: 85,
+        height: 85,
+        x: 37,
+        y: 37,
+        gradient: 'radial-gradient(circle, #ff4757 0%, #c44569 40%, #8b5cf6 80%, #6a0dad 100%)',
+        blur: 15,
+        opacity: 0.9,
+        zIndex: 4,
+      },
+    ],
+  },
+
+  dawnLight: {
+    backgroundColor: '#fef3f2',
+    visualEffects: {
+      saturation: 2.5,
+      contrast: 1.8,
+      brightness: 1.8,
+      hue: 10,
+    },
+    lighting3d: {
+      enabled: true,
+      position: { x: 70, y: 20 },
+      intensity: 0.75,
+    },
+    shapes: [
+      {
+        id: 'dawn-1',
+        width: 85,
+        height: 85,
+        x: -22,
+        y: -22,
+        gradient: 'radial-gradient(circle, #fbbf24 0%, #f59e0b 30%, #f97316 70%, #ea580c 100%)',
+        blur: 15,
+        opacity: 0.8,
+        zIndex: 1,
+      },
+      {
+        id: 'dawn-2',
+        width: 80,
+        height: 80,
+        x: 40,
+        y: -20,
+        gradient: 'radial-gradient(circle, #fed7aa 0%, #fdba74 50%, #fb923c 100%)',
+        blur: 12,
+        opacity: 0.75,
+        zIndex: 2,
+      },
+      {
+        id: 'dawn-3',
+        width: 80,
+        height: 80,
+        x: -20,
+        y: 40,
+        gradient: 'radial-gradient(circle, #fef3c7 0%, #fde68a 60%, #fbbf24 100%)',
+        blur: 12,
+        opacity: 0.75,
+        zIndex: 3,
+      },
+      {
+        id: 'dawn-4',
+        width: 85,
+        height: 85,
+        x: 37,
+        y: 37,
+        gradient: 'radial-gradient(circle, #f97316 0%, #ea580c 40%, #dc2626 80%, #b91c1c 100%)',
+        blur: 15,
+        opacity: 0.8,
+        zIndex: 4,
+      },
+    ],
+  },
+
+  twilightDark: {
+    backgroundColor: '#0c0513',
+    visualEffects: {
+      saturation: 3.2,
+      contrast: 2.2,
+      brightness: 1.9,
+      hue: -5,
+    },
+    lighting3d: {
+      enabled: true,
+      position: { x: 80, y: 10 },
+      intensity: 0.9,
+    },
+    shapes: [
+      {
+        id: 'twilight-1',
+        width: 85,
+        height: 85,
+        x: -22,
+        y: -22,
+        gradient: 'radial-gradient(circle, #4c1d95 0%, #6b21a8 30%, #7c3aed 70%, #8b5cf6 100%)',
+        blur: 15,
+        opacity: 0.9,
+        zIndex: 1,
+      },
+      {
+        id: 'twilight-2',
+        width: 80,
+        height: 80,
+        x: 40,
+        y: -20,
+        gradient: 'radial-gradient(circle, #1e1b4b 0%, #312e81 50%, #4338ca 100%)',
+        blur: 12,
+        opacity: 0.85,
+        zIndex: 2,
+      },
+      {
+        id: 'twilight-3',
+        width: 80,
+        height: 80,
+        x: -20,
+        y: 40,
+        gradient: 'radial-gradient(circle, #7c2d12 0%, #9a3412 60%, #dc2626 100%)',
+        blur: 12,
+        opacity: 0.85,
+        zIndex: 3,
+      },
+      {
+        id: 'twilight-4',
+        width: 85,
+        height: 85,
+        x: 37,
+        y: 37,
+        gradient: 'radial-gradient(circle, #831843 0%, #be185d 40%, #e11d48 80%, #f43f5e 100%)',
+        blur: 15,
+        opacity: 0.9,
+        zIndex: 4,
+      },
+    ],
+  },
+
+  midnightGlow: {
+    backgroundColor: '#000000',
+    visualEffects: {
+      saturation: 3.5,
+      contrast: 2.5,
+      brightness: 2.2,
+      hue: 0,
+    },
+    lighting3d: {
+      enabled: true,
+      position: { x: 85, y: 5 },
+      intensity: 1.0,
+    },
+    shapes: [
+      {
+        id: 'midnight-1',
+        width: 85,
+        height: 85,
+        x: -22,
+        y: -22,
+        gradient: 'radial-gradient(circle, #0ea5e9 0%, #0284c7 30%, #0369a1 70%, #075985 100%)',
+        blur: 15,
+        opacity: 0.95,
+        zIndex: 1,
+      },
+      {
+        id: 'midnight-2',
+        width: 80,
+        height: 80,
+        x: 40,
+        y: -20,
+        gradient: 'radial-gradient(circle, #06b6d4 0%, #0891b2 50%, #0e7490 100%)',
+        blur: 12,
+        opacity: 0.9,
+        zIndex: 2,
+      },
+      {
+        id: 'midnight-3',
+        width: 80,
+        height: 80,
+        x: -20,
+        y: 40,
+        gradient: 'radial-gradient(circle, #10b981 0%, #059669 60%, #047857 100%)',
+        blur: 12,
+        opacity: 0.9,
+        zIndex: 3,
+      },
+      {
+        id: 'midnight-4',
+        width: 85,
+        height: 85,
+        x: 37,
+        y: 37,
+        gradient: 'radial-gradient(circle, #6366f1 0%, #4f46e5 40%, #4338ca 80%, #3730a3 100%)',
+        blur: 15,
+        opacity: 0.95,
         zIndex: 4,
       },
     ],

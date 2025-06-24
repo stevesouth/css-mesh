@@ -30,10 +30,19 @@ interface SidebarProps {
     mouseTracking: boolean;
     shapes: boolean;
     effects: boolean;
+    enhancements: boolean;
     orb: boolean;
   };
   displayMode: 'background' | 'orb';
   orbSize: number;
+  dropShadow: number | boolean;
+  dropShadowOpacity: number;
+  dropShadowDirection: { x: number; y: number };
+  lighting3d: {
+    enabled: boolean;
+    position: { x: number; y: number };
+    intensity: number;
+  };
   onThemeChange: (theme: string) => void;
   onBackgroundColorChange: (color: string) => void;
   onResetToTheme: () => void;
@@ -46,6 +55,10 @@ interface SidebarProps {
   onShapesChange: (shapes: ShapeConfig[]) => void;
   onDisplayModeChange: (mode: 'background' | 'orb') => void;
   onOrbSizeChange: (size: number) => void;
+  onDropShadowChange: (shadow: number | boolean) => void;
+  onDropShadowOpacityChange: (opacity: number) => void;
+  onDropShadowDirectionChange: (direction: { x: number; y: number }) => void;
+  onLighting3dChange: (lighting: SidebarProps['lighting3d']) => void;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({
@@ -64,6 +77,10 @@ const Sidebar: React.FC<SidebarProps> = ({
   expandedSections,
   displayMode,
   orbSize,
+  dropShadow,
+  dropShadowOpacity,
+  dropShadowDirection,
+  lighting3d,
   onThemeChange,
   onBackgroundColorChange,
   onResetToTheme,
@@ -76,6 +93,10 @@ const Sidebar: React.FC<SidebarProps> = ({
   onShapesChange,
   onDisplayModeChange,
   onOrbSizeChange,
+  onDropShadowChange,
+  onDropShadowOpacityChange,
+  onDropShadowDirectionChange,
+  onLighting3dChange,
 }) => {
   const sidebarStyle: React.CSSProperties = {
     position: 'fixed',
@@ -585,12 +606,242 @@ const Sidebar: React.FC<SidebarProps> = ({
               </div>
             </div>
 
+            {/* Drop Shadow Controls */}
+            <div style={{ marginBottom: '16px' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', marginBottom: '12px' }}>
+                <input 
+                  type="checkbox" 
+                  checked={dropShadow !== false} 
+                  onChange={(e) => onDropShadowChange(e.target.checked ? true : false)}
+                />
+                Drop Shadow
+              </label>
+              
+              {dropShadow !== false && (
+                <>
+                  <div style={{ marginBottom: '12px' }}>
+                    <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px' }}>
+                      Size: {typeof dropShadow === 'number' ? `${dropShadow}px` : 'Auto'}
+                    </label>
+                                         <input
+                       type="range"
+                       min="5"
+                       max="50"
+                       step="1"
+                       value={typeof dropShadow === 'number' ? dropShadow : 20}
+                       onChange={(e) => onDropShadowChange(Number(e.target.value))}
+                       aria-label="Drop shadow size"
+                       style={{
+                         width: '100%',
+                         height: '4px',
+                         borderRadius: '2px',
+                         background: 'rgba(255, 255, 255, 0.2)',
+                         outline: 'none',
+                       }}
+                     />
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', opacity: 0.7, marginTop: '4px' }}>
+                      <span>5px</span>
+                      <span>50px</span>
+                    </div>
+                  </div>
+                  
+                  <div style={{ marginBottom: '12px' }}>
+                    <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px' }}>
+                      Opacity: {Math.round(dropShadowOpacity * 100)}%
+                    </label>
+                                                              <input
+                       type="range"
+                       min="0.05"
+                       max="1.0"
+                       step="0.05"
+                       value={dropShadowOpacity}
+                       onChange={(e) => onDropShadowOpacityChange(Number(e.target.value))}
+                       aria-label="Drop shadow opacity"
+                       style={{
+                         width: '100%',
+                         height: '4px',
+                         borderRadius: '2px',
+                         background: 'rgba(255, 255, 255, 0.2)',
+                         outline: 'none',
+                       }}
+                     />
+                     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', opacity: 0.7, marginTop: '4px' }}>
+                       <span>5%</span>
+                       <span>100%</span>
+                     </div>
+                  </div>
+
+                  {/* Shadow Direction Controls */}
+                  <div style={{ marginTop: '16px' }}>
+                    <div style={{ fontSize: '14px', fontWeight: '500', marginBottom: '8px', color: 'white' }}>
+                      Shadow Direction
+                    </div>
+                    
+                    <div style={{ marginBottom: '12px' }}>
+                      <div style={{ fontSize: '12px', marginBottom: '6px', opacity: 0.8, color: 'white' }}>
+                        Horizontal: {dropShadowDirection.x}px
+                      </div>
+                      <input
+                        type="range"
+                        min="-20"
+                        max="20"
+                        step="1"
+                        value={dropShadowDirection.x}
+                        onChange={(e) => onDropShadowDirectionChange({ 
+                          ...dropShadowDirection, 
+                          x: Number(e.target.value)
+                        })}
+                        aria-label="Shadow horizontal direction"
+                        style={{
+                          width: '100%',
+                          height: '4px',
+                          borderRadius: '2px',
+                          background: 'rgba(255, 255, 255, 0.2)',
+                          outline: 'none',
+                        }}
+                      />
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', opacity: 0.7, marginTop: '4px' }}>
+                        <span>-20px</span>
+                        <span>+20px</span>
+                      </div>
+                    </div>
+
+                    <div>
+                      <div style={{ fontSize: '12px', marginBottom: '6px', opacity: 0.8, color: 'white' }}>
+                        Vertical: {dropShadowDirection.y}px
+                      </div>
+                      <input
+                        type="range"
+                        min="-20"
+                        max="20"
+                        step="1"
+                        value={dropShadowDirection.y}
+                        onChange={(e) => onDropShadowDirectionChange({ 
+                          ...dropShadowDirection, 
+                          y: Number(e.target.value)
+                        })}
+                        aria-label="Shadow vertical direction"
+                        style={{
+                          width: '100%',
+                          height: '4px',
+                          borderRadius: '2px',
+                          background: 'rgba(255, 255, 255, 0.2)',
+                          outline: 'none',
+                        }}
+                      />
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', opacity: 0.7, marginTop: '4px' }}>
+                        <span>-20px</span>
+                        <span>+20px</span>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
+
+            {/* 3D Lighting Controls */}
+            <div style={{ marginBottom: '16px' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', marginBottom: '12px' }}>
+                <input 
+                  type="checkbox" 
+                  checked={lighting3d.enabled} 
+                  onChange={(e) => onLighting3dChange({ ...lighting3d, enabled: e.target.checked })}
+                />
+                3D Lighting
+              </label>
+              
+              {lighting3d.enabled && (
+                <>
+                  <div style={{ marginBottom: '12px' }}>
+                    <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px' }}>
+                      Light Position X: {lighting3d.position.x}%
+                    </label>
+                                         <input
+                       type="range"
+                       min="0"
+                       max="100"
+                       step="5"
+                       value={lighting3d.position.x}
+                       onChange={(e) => onLighting3dChange({ 
+                         ...lighting3d, 
+                         position: { ...lighting3d.position, x: Number(e.target.value) }
+                       })}
+                       aria-label="Light position X"
+                       style={{
+                         width: '100%',
+                         height: '4px',
+                         borderRadius: '2px',
+                         background: 'rgba(255, 255, 255, 0.2)',
+                         outline: 'none',
+                       }}
+                     />
+                  </div>
+                  
+                  <div style={{ marginBottom: '12px' }}>
+                    <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px' }}>
+                      Light Position Y: {lighting3d.position.y}%
+                    </label>
+                    <input
+                      type="range"
+                      min="0"
+                      max="100"
+                      step="5"
+                      value={lighting3d.position.y}
+                      onChange={(e) => onLighting3dChange({ 
+                        ...lighting3d, 
+                        position: { ...lighting3d.position, y: Number(e.target.value) }
+                      })}
+                      aria-label="Light position Y"
+                      style={{
+                        width: '100%',
+                        height: '4px',
+                        borderRadius: '2px',
+                        background: 'rgba(255, 255, 255, 0.2)',
+                        outline: 'none',
+                      }}
+                    />
+                  </div>
+                  
+                  <div style={{ marginBottom: '12px' }}>
+                    <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px' }}>
+                      Intensity: {Math.round(lighting3d.intensity * 100)}%
+                    </label>
+                                         <input
+                       type="range"
+                       min="0.1"
+                       max="1.0"
+                       step="0.05"
+                       value={lighting3d.intensity}
+                       onChange={(e) => onLighting3dChange({ 
+                         ...lighting3d, 
+                         intensity: Number(e.target.value)
+                       })}
+                       aria-label="Light intensity"
+                       style={{
+                         width: '100%',
+                         height: '4px',
+                         borderRadius: '2px',
+                         background: 'rgba(255, 255, 255, 0.2)',
+                         outline: 'none',
+                       }}
+                     />
+                     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', opacity: 0.7, marginTop: '4px' }}>
+                       <span>10%</span>
+                       <span>100%</span>
+                     </div>
+                  </div>
+                </>
+              )}
+            </div>
+
             <div style={{ fontSize: '12px', opacity: 0.7, lineHeight: '1.4' }}>
               <strong>Visual Effects:</strong><br/>
               • Saturation: Color intensity and vividness<br/>
               • Contrast: Light vs dark difference<br/>
               • Brightness: Overall lightness<br/>
-              • Hue: Color wheel rotation
+              • Hue: Color wheel rotation<br/>
+              • Drop Shadow: Realistic depth with layered shadows<br/>
+              • 3D Lighting: Radial light overlay for realistic orb glow
             </div>
           </div>
         )}

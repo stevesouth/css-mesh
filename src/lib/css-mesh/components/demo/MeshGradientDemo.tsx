@@ -48,13 +48,23 @@ const MeshGradientDemo: React.FC<MeshGradientDemoProps> = ({
     brightness: 1.0,
     hue: 0,
   });
+
+  // Visual enhancement state
+  const [dropShadow, setDropShadow] = useState<number | boolean>(false);
+  const [dropShadowOpacity, setDropShadowOpacity] = useState(0.4);
+  const [dropShadowDirection, setDropShadowDirection] = useState({ x: 0, y: 8 });
+  const [lighting3d, setLighting3d] = useState({
+    enabled: false,
+    position: { x: 30, y: 30 },
+    intensity: 0.3,
+  });
   
   // Dynamic shape state for editing - start with initial theme's shapes
   const [customShapes, setCustomShapes] = useState<ShapeConfig[]>(
     ALL_THEMES[initialTheme]?.shapes || []
   );
 
-  // Initialize visual effects from the initial theme
+  // Initialize visual effects and lighting from the initial theme
   useEffect(() => {
     const initialThemeData = ALL_THEMES[initialTheme];
     if (initialThemeData?.visualEffects) {
@@ -63,6 +73,13 @@ const MeshGradientDemo: React.FC<MeshGradientDemoProps> = ({
         contrast: initialThemeData.visualEffects.contrast || 1.0,
         brightness: initialThemeData.visualEffects.brightness || 1.0,
         hue: initialThemeData.visualEffects.hue || 0,
+      });
+    }
+    if (initialThemeData?.lighting3d) {
+      setLighting3d({
+        enabled: initialThemeData.lighting3d.enabled || false,
+        position: initialThemeData.lighting3d.position || { x: 30, y: 30 },
+        intensity: initialThemeData.lighting3d.intensity || 0.3,
       });
     }
   }, [initialTheme]);
@@ -75,6 +92,7 @@ const MeshGradientDemo: React.FC<MeshGradientDemoProps> = ({
     mouseTracking: true,
     shapes: true,
     effects: true,
+    enhancements: true,
     orb: true,
   });
 
@@ -150,6 +168,21 @@ const MeshGradientDemo: React.FC<MeshGradientDemoProps> = ({
           contrast: 1.0,
           brightness: 1.0,
           hue: 0,
+        });
+      }
+
+      // Apply theme's lighting3d or use defaults
+      if (themeData.lighting3d) {
+        setLighting3d({
+          enabled: themeData.lighting3d.enabled || false,
+          position: themeData.lighting3d.position || { x: 30, y: 30 },
+          intensity: themeData.lighting3d.intensity || 0.3,
+        });
+      } else {
+        setLighting3d({
+          enabled: false,
+          position: { x: 30, y: 30 },
+          intensity: 0.3,
         });
       }
       
@@ -253,6 +286,22 @@ const MeshGradientDemo: React.FC<MeshGradientDemoProps> = ({
 
   const handleOrbSizeChange = (size: number) => {
     setOrbSize(size);
+  };
+
+  const handleDropShadowChange = (shadow: number | boolean) => {
+    setDropShadow(shadow);
+  };
+
+  const handleDropShadowOpacityChange = (opacity: number) => {
+    setDropShadowOpacity(opacity);
+  };
+
+  const handleDropShadowDirectionChange = (direction: { x: number; y: number }) => {
+    setDropShadowDirection(direction);
+  };
+
+  const handleLighting3dChange = (lighting: typeof lighting3d) => {
+    setLighting3d(lighting);
   };
 
   // Check if there are customizations compared to the base theme
@@ -383,6 +432,10 @@ const MeshGradientDemo: React.FC<MeshGradientDemoProps> = ({
       }}
       mouseTracking={mouseTracking}
       visualEffects={visualEffects}
+      dropShadow={dropShadow}
+      dropShadowOpacity={dropShadowOpacity}
+      dropShadowDirection={dropShadowDirection}
+      lighting3d={lighting3d}
       customConfig={isCustomMode ? {
         backgroundColor: backgroundColor,
         shapes: customShapes,
@@ -538,6 +591,10 @@ const MeshGradientDemo: React.FC<MeshGradientDemoProps> = ({
               expandedSections={expandedSections}
               displayMode={displayMode}
               orbSize={orbSize}
+              dropShadow={dropShadow}
+              dropShadowOpacity={dropShadowOpacity}
+              dropShadowDirection={dropShadowDirection}
+              lighting3d={lighting3d}
               onThemeChange={handleThemeChange}
               onBackgroundColorChange={handleBackgroundColorChange}
               onResetToTheme={handleResetToTheme}
@@ -550,6 +607,10 @@ const MeshGradientDemo: React.FC<MeshGradientDemoProps> = ({
               onShapesChange={handleShapesChange}
               onDisplayModeChange={handleDisplayModeChange}
               onOrbSizeChange={handleOrbSizeChange}
+              onDropShadowChange={handleDropShadowChange}
+              onDropShadowOpacityChange={handleDropShadowOpacityChange}
+              onDropShadowDirectionChange={handleDropShadowDirectionChange}
+              onLighting3dChange={handleLighting3dChange}
             />
           )}
 
@@ -581,6 +642,10 @@ const MeshGradientDemo: React.FC<MeshGradientDemoProps> = ({
                 }}
                 mouseTracking={mouseTracking}
                 visualEffects={visualEffects}
+                dropShadow={dropShadow}
+                dropShadowOpacity={dropShadowOpacity}
+                dropShadowDirection={dropShadowDirection}
+                lighting3d={lighting3d}
                 customConfig={isCustomMode ? {
                   backgroundColor: backgroundColor,
                   shapes: customShapes,
@@ -686,6 +751,10 @@ const MeshGradientDemo: React.FC<MeshGradientDemoProps> = ({
                     },
                     mouseTracking: mouseTracking,
                     visualEffects: visualEffects,
+                    dropShadow: dropShadow,
+                    dropShadowOpacity: dropShadowOpacity,
+                    dropShadowDirection: dropShadowDirection,
+                    lighting3d: lighting3d,
                     customConfig: isCustomMode ? {
                       backgroundColor: backgroundColor,
                       shapes: customShapes,
@@ -725,6 +794,10 @@ const MeshGradientDemo: React.FC<MeshGradientDemoProps> = ({
                   mainTextColor={mainTextColor}
                   showOrbMode={displayMode === 'orb'}
                   orbSize={orbSize}
+                  dropShadow={dropShadow}
+                  dropShadowOpacity={dropShadowOpacity}
+                  dropShadowDirection={dropShadowDirection}
+                  lighting3d={lighting3d}
                 />
               )}
 

@@ -44,11 +44,19 @@ export interface VisualEffects {
   hue?: number;
 }
 
+// 3D lighting configuration
+export interface Lighting3D {
+  enabled: boolean;
+  position?: { x: number; y: number };
+  intensity?: number;
+}
+
 // Theme pack definition
 export interface ThemePack {
   backgroundColor: string;
   shapes: ShapeConfig[];
   visualEffects?: VisualEffects;
+  lighting3d?: Lighting3D;
 }
 
 // Collection of all theme packs

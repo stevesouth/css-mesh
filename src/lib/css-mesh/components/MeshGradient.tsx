@@ -24,6 +24,10 @@ const MeshGradient: React.FC<MeshGradientProps> = ({
   performance = 'auto',
   shape = 'background',
   size,
+  dropShadow,
+  dropShadowOpacity = 0.4,
+  dropShadowDirection = { x: 0, y: 8 },
+  lighting3d,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerHeight, setContainerHeight] = useState(400); // Default fallback
@@ -103,6 +107,10 @@ const MeshGradient: React.FC<MeshGradientProps> = ({
   const defaultVisualEffects = selectedTheme.visualEffects || { saturation: 1, contrast: 1, brightness: 1, hue: 0 };
   const finalVisualEffects = visualEffects || defaultVisualEffects;
 
+  // Use theme's lighting3d as default, allow override via props
+  const defaultLighting3d = selectedTheme.lighting3d || { enabled: false };
+  const finalLighting3d = lighting3d || defaultLighting3d;
+
   // Determine animation type
   const effectiveAnimationType: AnimationType = animated ? animationType : 'none';
   const effectiveContainerAnimation: ContainerAnimationType = containerAnimation;
@@ -135,17 +143,58 @@ const MeshGradient: React.FC<MeshGradientProps> = ({
   const isOrb = shape === 'orb';
   const orbSize = isOrb ? getOrbSize() : undefined;
 
+  // Generate drop shadow styles
+  const getDropShadowStyles = (): string => {
+    if (!dropShadow) return 'none';
+    
+    const shadowSize = typeof dropShadow === 'number' ? dropShadow : (isOrb ? orbSize! * 0.2 : 20);
+    const opacity = dropShadowOpacity;
+    const direction = dropShadowDirection;
+    
+    // Create layered shadows for realistic depth with configurable direction
+    const shadows = [
+      `${direction.x}px ${direction.y + shadowSize * 0.5}px ${shadowSize * 1.5}px rgba(0, 0, 0, ${opacity})`,
+      `${direction.x * 0.5}px ${direction.y + shadowSize * 0.2}px ${shadowSize * 0.8}px rgba(0, 0, 0, ${opacity * 0.8})`,
+      `${direction.x * 0.3}px ${direction.y + shadowSize * 0.1}px ${shadowSize * 0.3}px rgba(0, 0, 0, ${opacity * 0.6})`
+    ];
+    
+    return shadows.join(', ');
+  };
+
+  // Generate 3D lighting overlay - fixed position, not affected by container rotation
+  const getLighting3dOverlay = (): React.CSSProperties | undefined => {
+    if (!finalLighting3d.enabled) return undefined;
+    
+    const position = finalLighting3d.position || { x: 30, y: 30 };
+    const intensity = finalLighting3d.intensity || 0.3;
+    
+    return {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      pointerEvents: 'none',
+      background: `radial-gradient(circle at ${position.x}% ${position.y}%, 
+        rgba(255, 255, 255, ${intensity * 0.5}) 0%, 
+        rgba(255, 255, 255, ${intensity * 0.2}) 30%, 
+        rgba(0, 0, 0, ${intensity * 0.1}) 70%, 
+        transparent 100%)`,
+      borderRadius: isOrb ? '50%' : undefined, // Match container shape
+      zIndex: 500,
+    };
+  };
+
   const containerStyles: React.CSSProperties = {
     position: 'relative',
-    width: isOrb ? `${orbSize}px` : '100%',
-    height: isOrb ? `${orbSize}px` : '100%',
+    width: '100%',
+    height: '100%',
     backgroundColor: finalConfig.backgroundColor,
-    overflow: 'hidden',
+    overflow: 'hidden', // Keep shapes clipped to container shape
     transform: 'translate3d(0, 0, 0)', // Force GPU acceleration for the container
     borderRadius: isOrb ? '50%' : undefined,
     ...finalConfig.containerStyle,
     ...containerAnimationStyles,
-    ...style,
   };
 
   const getShapeBaseStyles = (shape: ShapeType = 'ellipse', shapeProps: ShapeProperties = {}) => {
@@ -200,7 +249,14 @@ const MeshGradient: React.FC<MeshGradientProps> = ({
       ref={containerRef}
       data-testid="mesh-gradient"
       className={`css-mesh ${className}`} 
-      style={containerStyles}
+      style={{
+        position: 'relative',
+        width: isOrb ? `${orbSize}px` : '100%',
+        height: isOrb ? `${orbSize}px` : '100%',
+        boxShadow: getDropShadowStyles(), // Apply shadow to outer container so it doesn't rotate
+        borderRadius: isOrb ? '50%' : undefined, // Match inner container shape for shadows
+        ...style,
+      }}
     >
       {/* Inject animation keyframes */}
       {(animationKeyframes || containerKeyframes) && (
@@ -210,64 +266,72 @@ const MeshGradient: React.FC<MeshGradientProps> = ({
         </style>
       )}
       
-      {optimizedShapes.map((shape, index) => {
-        const animationStyles = getAnimationStyles(
-          effectiveAnimationType, 
-          index,
-          animationConfig?.duration
-        );
+      {/* Animated container with shapes */}
+      <div style={containerStyles}>
+        {optimizedShapes.map((shape, index) => {
+          const animationStyles = getAnimationStyles(
+            effectiveAnimationType, 
+            index,
+            animationConfig?.duration
+          );
+          
+          const blurInPixels = getBlurInPixels(shape.blur);
+          const shapeType = shape.shape || 'ellipse';
+          
+          // Calculate mouse effect offset
+          const mouseOffset = getMouseOffset(shape.x + shape.width / 2, shape.y + shape.height / 2);
+          
+          // Apply visual effects to the filter (all shapes use standard filter now)
+          const filterEffects = `blur(${blurInPixels}px) saturate(${finalVisualEffects.saturation}) contrast(${finalVisualEffects.contrast}) brightness(${finalVisualEffects.brightness}) hue-rotate(${finalVisualEffects.hue}deg)`;
+          
+          // Combine GPU acceleration with animation and mouse transforms
+          const mouseTransform = mouseOffset.x !== 0 || mouseOffset.y !== 0 
+            ? `translate(${mouseOffset.x}%, ${mouseOffset.y}%)` 
+            : '';
+          
+          const baseTransform = 'translate3d(0, 0, 0)';
+          const animTransform = animationStyles.transform || '';
+          const finalTransform = [baseTransform, animTransform, mouseTransform]
+            .filter(Boolean)
+            .join(' ');
+          
+          // Generate shape-specific styles
+          const shapeStyles = getShapeBaseStyles(shapeType, shape.shapeProps || {});
+          
+          return (
+            <div
+              key={shape.id}
+              data-testid={`mesh-ellipse-${shape.id}`}
+              style={{
+                ...shapeStyles,
+                width: `${shape.width}%`,
+                height: `${shape.height}%`,
+                left: `${shape.x}%`,
+                top: `${shape.y}%`,
+                background: shape.gradient,
+                filter: filterEffects,
+                opacity: shape.opacity || 1,
+                zIndex: shape.zIndex || index,
+                ...animationStyles,
+                // Override any transform from animationStyles to include mouse effects
+                transform: finalTransform,
+                // Smooth transitions for mouse effects
+                transition: mouseTracking?.enabled ? 'transform 0.1s ease-out' : undefined,
+              }}
+            />
+          );
+        })}
         
-        const blurInPixels = getBlurInPixels(shape.blur);
-        const shapeType = shape.shape || 'ellipse';
-        
-        // Calculate mouse effect offset
-        const mouseOffset = getMouseOffset(shape.x + shape.width / 2, shape.y + shape.height / 2);
-        
-        // Apply visual effects to the filter (all shapes use standard filter now)
-        const filterEffects = `blur(${blurInPixels}px) saturate(${finalVisualEffects.saturation}) contrast(${finalVisualEffects.contrast}) brightness(${finalVisualEffects.brightness}) hue-rotate(${finalVisualEffects.hue}deg)`;
-        
-        // Combine GPU acceleration with animation and mouse transforms
-        const mouseTransform = mouseOffset.x !== 0 || mouseOffset.y !== 0 
-          ? `translate(${mouseOffset.x}%, ${mouseOffset.y}%)` 
-          : '';
-        
-        const baseTransform = 'translate3d(0, 0, 0)';
-        const animTransform = animationStyles.transform || '';
-        const finalTransform = [baseTransform, animTransform, mouseTransform]
-          .filter(Boolean)
-          .join(' ');
-        
-        // Generate shape-specific styles
-        const shapeStyles = getShapeBaseStyles(shapeType, shape.shapeProps || {});
-        
-        return (
-          <div
-            key={shape.id}
-            data-testid={`mesh-ellipse-${shape.id}`}
-            style={{
-              ...shapeStyles,
-              width: `${shape.width}%`,
-              height: `${shape.height}%`,
-              left: `${shape.x}%`,
-              top: `${shape.y}%`,
-              background: shape.gradient,
-              filter: filterEffects,
-              opacity: shape.opacity || 1,
-              zIndex: shape.zIndex || index,
-              ...animationStyles,
-              // Override any transform from animationStyles to include mouse effects
-              transform: finalTransform,
-              // Smooth transitions for mouse effects
-              transition: mouseTracking?.enabled ? 'transform 0.1s ease-out' : undefined,
-            }}
-          />
-        );
-      })}
+        {children && (
+          <div style={{ position: 'relative', zIndex: 1000 }}>
+            {children}
+          </div>
+        )}
+      </div>
       
-      {children && (
-        <div style={{ position: 'relative', zIndex: 1000 }}>
-          {children}
-        </div>
+      {/* 3D Lighting Overlay - Fixed position, outside rotations */}
+      {finalLighting3d.enabled && (
+        <div style={getLighting3dOverlay()} />
       )}
     </div>
   );
