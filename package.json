@@ -1,14 +1,15 @@
 {
   "name": "css-mesh",
-  "description": "Beautiful CSS-based animated mesh gradients for React - 20 themes, mouse tracking, no WebGL required",
-  "version": "0.6.0",
+  "description": "Beautiful CSS-based animated mesh gradients for React - 34 themes, 3D lighting, drop shadows, mouse tracking, no WebGL required",
+  "version": "0.7.0",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.es.js",
   "types": "./dist/index.d.ts",
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
   "sideEffects": false,
   "exports": {
@@ -48,11 +49,12 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "build:lib": "vite build --config vite.config.lib.ts",
+    "build:lib": "npm run sync-version && vite build --config vite.config.lib.ts",
     "test": "vitest",
     "test:run": "vitest run",
     "lint": "eslint .",
     "preview": "vite preview",
+    "sync-version": "node scripts/sync-version.js",
     "prepublishOnly": "npm run build:lib && npm run test:run"
   },
   "peerDependencies": {

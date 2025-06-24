@@ -4,13 +4,16 @@ Animated gradient backgrounds using CSS blur effects and positioned ellipses - n
 
 ## ✨ Features
 
-- 🎨 **20 Built-in Themes** - 10 dark themes + 10 light themes, carefully curated and organized
+- 🎨 **34 Built-in Themes** - Organized into Base, Orb, Dramatic, and Special categories
+- 🔮 **Orb Mode** - Floating circular gradients with 3D lighting and drop shadows
 - ⚡ **CSS-Based** - Pure CSS blur effects, no WebGL or shaders required
 - 🪶 **Lightweight** - Small bundle size, no heavy 3D dependencies
-- 🎛️ **Animation System** - 6 animation types: float, pulse, rotation, orbit, wave, hue
+- 🎛️ **Animation System** - 7 animation types: float, pulse, rotation, orbit, wave, morph, hue
 - 🖱️ **Mouse Tracking** - Interactive attract/repel modes with configurable intensity
 - 🔧 **Fully Customizable** - Configure ellipse size, position, gradients, blur, and opacity
 - 🎨 **Visual Effects** - Saturation, contrast, brightness, and hue adjustments
+- 💡 **3D Lighting** - Realistic lighting overlays with position and intensity controls
+- 🌑 **Drop Shadows** - Configurable shadows with direction, size, and opacity
 - 🎯 **TypeScript** - Full type safety and IntelliSense support
 - 📦 **Smart Configs** - Diff-based customization system for efficient overrides
 
@@ -32,6 +35,26 @@ function App() {
     >
       <div>Your content here</div>
     </MeshGradient>
+  );
+}
+
+// Orb Mode for AI Assistants
+function ChatBot() {
+  return (
+    <MeshGradient
+      theme="sunsetGlow"
+      shape="orb"
+      size={85}
+      animated={true}
+      animationType="morph"
+      containerAnimation="rotation"
+      dropShadow={32}
+      lighting3d={{
+        enabled: true,
+        position: { x: 75, y: 15 },
+        intensity: 0.85
+      }}
+    />
   );
 }
 ```
@@ -70,44 +93,67 @@ CSS Mesh creates beautiful animated gradients using pure CSS techniques:
 - Marketing sites
 - Any project wanting beautiful animated gradients
 
-## 🎨 Available Themes
+## 🎨 Available Themes (34 Total)
 
-### Dark Themes (10)
-| Theme | Style | Colors |
-|-------|-------|---------|
-| `sunset` | Warm | Oranges & pinks |
-| `ocean` | Cool | Blues & teals |
-| `aurora` | Vibrant | Purples & greens |
-| `cosmic` | Dark | Deep space colors |
-| `forest` | Natural | Greens & earth tones |
-| `monochrome` | Minimal | Grays & blues |
-| `volcanic` | Dramatic | Reds & oranges |
-| `electric` | Bold | Neon blues & purples |
-| `neon` | Vibrant | Bright neon colors |
-| `shapes` | Demo | Mixed geometric shapes |
+### 🔮 Orb Themes (14) - Optimized for floating circular gradients
+| Theme | Style | Colors | Background |
+|-------|-------|---------|------------|
+| `cyberpunk` | Neon | Electric green & pink | Dark |
+| `voidPulse` | Mystical | Deep purples & blues | Black |
+| `fireCore` | Intense | Fiery oranges & reds | Dark |
+| `deepSpace` | Cosmic | Space blues & purples | Dark |
+| `shadowGlow` | Dramatic | Dark with bright accents | Black |
+| `sunsetGlow` | Premium | Warm sunset enhanced | Dark |
+| `twilightDark` | Rich | Purple twilight colors | Dark |
+| `midnightGlow` | Electric | Bright blues & cyans | Black |
+| `crystalBlue` | Cool | Crystal blue tones | Light |
+| `sunbeam` | Bright | Golden yellow rays | Light |
+| `roseDawn` | Elegant | Pink & purple dawn | Light |
+| `mintFresh` | Cool | Fresh mint greens | Light |
+| `lavenderMist` | Soft | Lavender & purple | Light |
+| `dawnLight` | Warm | Soft golden dawn | Light |
 
-### Light Themes (10)
-| Theme | Style | Colors |
-|-------|-------|---------|
-| `minimal` | Clean | Soft blues & grays |
-| `dreamy` | Soft | Pastel pinks & purples |
-| `spring` | Fresh | Light greens & pastels |
-| `sky` | Airy | Light blues & whites |
-| `cream` | Warm | Cream & beige tones |
-| `dawn` | Gentle | Soft oranges & pinks |
-| `pearl` | Elegant | Pearl & lavender |
-| `blush` | Delicate | Soft pinks & roses |
-| `lavender` | Serene | Purple & lavender |
-| `mint` | Cool | Mint green & aqua |
+### 🎨 Base Themes (13) - Classic gradient backgrounds
+| Theme | Style | Colors | Background |
+|-------|-------|---------|------------|
+| `sunset` | Warm | Oranges & pinks | Dark |
+| `ocean` | Cool | Blues & teals | Dark |
+| `aurora` | Vibrant | Purples & greens | Dark |
+| `cosmic` | Dark | Deep space colors | Dark |
+| `forest` | Natural | Greens & earth tones | Dark |
+| `monochrome` | Minimal | Grays & blues | Dark |
+| `minimal` | Clean | Soft blues & grays | Light |
+| `spring` | Fresh | Light greens & pastels | Light |
+| `sky` | Airy | Light blues & whites | Light |
+| `cream` | Warm | Cream & beige tones | Light |
+| `dawn` | Gentle | Soft oranges & pinks | Light |
+| `pearl` | Elegant | Pearl & lavender | Light |
+| `blush` | Delicate | Soft pinks & roses | Light |
+
+### ⚡ Dramatic Themes (4) - Bold, intense gradients
+| Theme | Style | Colors | Background |
+|-------|-------|---------|------------|
+| `volcanic` | Dramatic | Reds & oranges | Dark |
+| `electric` | Bold | Neon blues & purples | Dark |
+| `neon` | Vibrant | Bright neon colors | Dark |
+| `dreamy` | Soft | Pastel pinks & purples | Light |
+
+### ✨ Special Themes (3) - Unique features and shapes
+| Theme | Style | Colors | Background |
+|-------|-------|---------|------------|
+| `shapes` | Demo | Mixed geometric shapes | Dark |
+| `lavender` | Serene | Purple & lavender | Light |
+| `mint` | Cool | Mint green & aqua | Light |
 
 ## 🎛️ Animation Types
 
-- `float` - Gentle floating movement
+- `float` - Gentle floating movement (default)
 - `pulse` - Scale pulsing effect  
 - `rotation` - Continuous rotation
 - `orbit` - Circular orbital motion
 - `wave` - Wave-like undulation
-- `hue` - Color hue shifting
+- `morph` - Organic morphing animation
+- `hue` - Color hue shifting (container-level)
 
 ## 📖 API Reference
 
@@ -126,6 +172,16 @@ interface MeshGradientProps {
   containerAnimation?: ContainerAnimationType; // Container-level animations
   mouseTracking?: MouseTrackingConfig;     // Mouse interaction settings
   visualEffects?: VisualEffectsConfig;     // Color/visual adjustments
+  shape?: 'background' | 'orb';           // Display mode (default: 'background')
+  size?: number;                          // Orb size percentage (default: 80)
+  dropShadow?: number | boolean;          // Drop shadow size or enable (default: false)
+  dropShadowOpacity?: number;             // Shadow opacity 0-1 (default: 0.4)
+  dropShadowDirection?: { x: number; y: number }; // Shadow direction (default: {x: 0, y: 8})
+  lighting3d?: {                          // 3D lighting overlay
+    enabled: boolean;
+    position?: { x: number; y: number };  // Light position 0-100% (default: {x: 30, y: 30})
+    intensity?: number;                   // Light intensity 0-1 (default: 0.3)
+  };
 }
 ```
 
@@ -173,6 +229,48 @@ const customConfig = {
   <YourContent />
 </MeshGradient>
 ```
+
+## 🔮 Orb Mode
+
+Create floating circular gradients perfect for AI assistants and modern interfaces:
+
+```tsx
+<MeshGradient
+  theme="cyberpunk"
+  shape="orb"
+  size={85}
+  animated={true}
+  animationType="morph"
+  containerAnimation="rotation"
+  dropShadow={32}
+  dropShadowOpacity={0.6}
+  dropShadowDirection={{ x: 0, y: 12 }}
+  lighting3d={{
+    enabled: true,
+    position: { x: 75, y: 25 },
+    intensity: 0.8
+  }}
+/>
+```
+
+## 💡 3D Lighting & Shadows
+
+Add realistic depth with lighting and shadows:
+
+```tsx
+<MeshGradient
+  theme="deepSpace"
+  lighting3d={{
+    enabled: true,
+    position: { x: 30, y: 30 },  // Light position (0-100%)
+    intensity: 0.5               // Light intensity (0-1)
+  }}
+  dropShadow={25}                // Shadow size in pixels
+  dropShadowOpacity={0.4}        // Shadow opacity (0-1)
+  dropShadowDirection={{ x: 5, y: 10 }} // Shadow offset
+>
+  <YourContent />
+</MeshGradient>
 
 ## 📄 License
 
