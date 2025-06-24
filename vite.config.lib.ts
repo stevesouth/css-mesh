@@ -33,7 +33,9 @@ export default defineConfig({
     minify: 'terser',
     sourcemap: true,
     // Ensure clean builds
-    emptyOutDir: true
+    emptyOutDir: true,
+    // Don't copy public directory for library builds
+    copyPublicDir: false
   },
   // Generate TypeScript declarations
   esbuild: {

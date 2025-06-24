@@ -63,9 +63,9 @@ function ChatBot() {
 
 **[cssmesh.dev](https://cssmesh.dev)** - Explore all 20 themes, customize ellipses, try animations, and generate code in real-time.
 
-![CSS Mesh Demo Interface](./public/screenshot.png)
+![CSS Mesh Demo Interface](https://raw.githubusercontent.com/stevesouth/css-mesh/main/public/screenshot.png)
 
-![CSS Mesh Orb Mode](./public/orb-mode.png)
+![CSS Mesh Orb Mode](https://raw.githubusercontent.com/stevesouth/css-mesh/main/public/orb-mode.png)
 
 ## 📦 Installation
 
