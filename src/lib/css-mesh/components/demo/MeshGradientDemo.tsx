@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import MeshGradient from '../MeshGradient';
 import { Sidebar, CodeGenerator, ThemeGrid, FeaturesSection, ChatPreview } from '.';
 import { ALL_THEMES, isLightTheme } from '../../themes';
+import { getThemeDefaults } from '../../utils/config-resolver';
 import type { BackgroundConfig, ShapeConfig } from '../../types/theme.types';
 import type { MeshGradientDemoProps } from '../../types/component.types';
 import type { AnimationType, ContainerAnimationType } from '../../types/animation.types';
@@ -64,38 +65,61 @@ const MeshGradientDemo: React.FC<MeshGradientDemoProps> = ({
     ALL_THEMES[initialTheme]?.shapes || []
   );
 
-  // Initialize visual effects and lighting from the initial theme
+  // Initialize visual effects and lighting from the initial theme using config resolver
   useEffect(() => {
     const initialThemeData = ALL_THEMES[initialTheme];
-    if (initialThemeData?.visualEffects) {
-      setVisualEffects({
-        saturation: initialThemeData.visualEffects.saturation || 1.0,
-        contrast: initialThemeData.visualEffects.contrast || 1.0,
-        brightness: initialThemeData.visualEffects.brightness || 1.0,
-        hue: initialThemeData.visualEffects.hue || 0,
-      });
-    }
-    if (initialThemeData?.lighting3d) {
-      setLighting3d({
-        enabled: initialThemeData.lighting3d.enabled || false,
-        position: initialThemeData.lighting3d.position || { x: 30, y: 30 },
-        intensity: initialThemeData.lighting3d.intensity || 0.3,
-      });
-    }
-    if (initialThemeData?.dropShadow) {
-      setDropShadow(initialThemeData.dropShadow.size || true);
-      setDropShadowOpacity(initialThemeData.dropShadow.opacity || 0.4);
-      setDropShadowDirection(initialThemeData.dropShadow.direction || { x: 0, y: 8 });
-    }
-    if (initialThemeData?.animation) {
-      setIsAnimated(initialThemeData.animation.enabled || false);
-      setAnimationType(initialThemeData.animation.type || 'float');
-      setAnimationSpeed(initialThemeData.animation.duration ? 10 / initialThemeData.animation.duration : 1.0);
-      setAnimationIntensity(initialThemeData.animation.intensity || 1.0);
-    }
-    if (initialThemeData?.containerAnimation) {
-      setContainerAnimation(initialThemeData.containerAnimation.type || 'none');
-      setContainerAnimationSpeed(initialThemeData.containerAnimation.duration ? 10 / initialThemeData.containerAnimation.duration : 1.0);
+    if (initialThemeData) {
+      const themeDefaults = getThemeDefaults(initialThemeData);
+      
+      // Apply theme defaults for visual effects
+      if (themeDefaults.visualEffects) {
+        setVisualEffects({
+          saturation: themeDefaults.visualEffects.saturation ?? 1.0,
+          contrast: themeDefaults.visualEffects.contrast ?? 1.0,
+          brightness: themeDefaults.visualEffects.brightness ?? 1.0,
+          hue: themeDefaults.visualEffects.hue ?? 0,
+        });
+      }
+      
+      // Apply theme defaults for lighting
+      if (themeDefaults.lighting3d) {
+        setLighting3d({
+          enabled: themeDefaults.lighting3d.enabled || false,
+          position: themeDefaults.lighting3d.position || { x: 30, y: 30 },
+          intensity: themeDefaults.lighting3d.intensity || 0.3,
+        });
+      }
+      
+      // Apply theme defaults for drop shadow
+      if (themeDefaults.dropShadow !== undefined) {
+        setDropShadow(themeDefaults.dropShadow);
+      }
+      if (themeDefaults.dropShadowOpacity !== undefined) {
+        setDropShadowOpacity(themeDefaults.dropShadowOpacity);
+      }
+      if (themeDefaults.dropShadowDirection) {
+        setDropShadowDirection(themeDefaults.dropShadowDirection);
+      }
+      
+      // Apply theme defaults for animation
+      if (themeDefaults.animated !== undefined) {
+        setIsAnimated(themeDefaults.animated);
+      }
+      if (themeDefaults.animationType) {
+        setAnimationType(themeDefaults.animationType);
+      }
+      if (themeDefaults.animationConfig) {
+        setAnimationSpeed(themeDefaults.animationConfig.duration ? 10 / themeDefaults.animationConfig.duration : 1.0);
+        setAnimationIntensity(themeDefaults.animationConfig.intensity || 1.0);
+      }
+      
+      // Apply theme defaults for container animation  
+      if (themeDefaults.containerAnimation) {
+        setContainerAnimation(themeDefaults.containerAnimation);
+      }
+      if (themeDefaults.containerAnimationConfig) {
+        setContainerAnimationSpeed(themeDefaults.containerAnimationConfig.duration ? 10 / themeDefaults.containerAnimationConfig.duration : 1.0);
+      }
     }
   }, [initialTheme]);
   
@@ -157,7 +181,7 @@ const MeshGradientDemo: React.FC<MeshGradientDemoProps> = ({
       });
       onThemeSelect?.(theme);
     } else {
-      // Switch to theme mode - decide what to preserve
+      // Switch to theme mode - apply theme defaults using config resolver
       const themeData = ALL_THEMES[theme];
       if (!themeData) return;
       
@@ -165,16 +189,19 @@ const MeshGradientDemo: React.FC<MeshGradientDemoProps> = ({
       setSelectedTheme(theme);
       setBackgroundColor(themeData.backgroundColor);
       
-      // Reset shapes and apply theme's visual effects
+      // Reset shapes
       setCustomShapes([...themeData.shapes]);
       
-      // Apply theme's visual effects or use defaults
-      if (themeData.visualEffects) {
+      // Apply theme defaults using config resolver
+      const themeDefaults = getThemeDefaults(themeData);
+      
+      // Apply visual effects defaults
+      if (themeDefaults.visualEffects) {
         setVisualEffects({
-          saturation: themeData.visualEffects.saturation || 1.0,
-          contrast: themeData.visualEffects.contrast || 1.0,
-          brightness: themeData.visualEffects.brightness || 1.0,
-          hue: themeData.visualEffects.hue || 0,
+          saturation: themeDefaults.visualEffects.saturation ?? 1.0,
+          contrast: themeDefaults.visualEffects.contrast ?? 1.0,
+          brightness: themeDefaults.visualEffects.brightness ?? 1.0,
+          hue: themeDefaults.visualEffects.hue ?? 0,
         });
       } else {
         // Theme doesn't have visual effects, use defaults
@@ -186,12 +213,12 @@ const MeshGradientDemo: React.FC<MeshGradientDemoProps> = ({
         });
       }
 
-      // Apply theme's lighting3d or use defaults
-      if (themeData.lighting3d) {
+      // Apply lighting3d defaults
+      if (themeDefaults.lighting3d) {
         setLighting3d({
-          enabled: themeData.lighting3d.enabled || false,
-          position: themeData.lighting3d.position || { x: 30, y: 30 },
-          intensity: themeData.lighting3d.intensity || 0.3,
+          enabled: themeDefaults.lighting3d.enabled || false,
+          position: themeDefaults.lighting3d.position || { x: 30, y: 30 },
+          intensity: themeDefaults.lighting3d.intensity || 0.3,
         });
       } else {
         setLighting3d({
@@ -201,34 +228,55 @@ const MeshGradientDemo: React.FC<MeshGradientDemoProps> = ({
         });
       }
 
-      // Apply theme's drop shadow or use defaults
-      if (themeData.dropShadow) {
-        setDropShadow(themeData.dropShadow.size || true);
-        setDropShadowOpacity(themeData.dropShadow.opacity || 0.4);
-        setDropShadowDirection(themeData.dropShadow.direction || { x: 0, y: 8 });
+      // Apply drop shadow defaults
+      if (themeDefaults.dropShadow !== undefined) {
+        setDropShadow(themeDefaults.dropShadow);
       } else {
         setDropShadow(false);
+      }
+      if (themeDefaults.dropShadowOpacity !== undefined) {
+        setDropShadowOpacity(themeDefaults.dropShadowOpacity);
+      } else {
         setDropShadowOpacity(0.4);
+      }
+      if (themeDefaults.dropShadowDirection) {
+        setDropShadowDirection(themeDefaults.dropShadowDirection);
+      } else {
         setDropShadowDirection({ x: 0, y: 8 });
       }
 
-      // Apply theme's animation configuration or use defaults
-      if (themeData.animation) {
-        setIsAnimated(themeData.animation.enabled || false);
-        setAnimationType(themeData.animation.type || 'float');
-        // Convert duration back to speed (speed = 10 / duration)
-        setAnimationSpeed(themeData.animation.duration ? 10 / themeData.animation.duration : 1.0);
-        setAnimationIntensity(themeData.animation.intensity || 1.0);
+      // Apply animation defaults  
+      if (themeDefaults.animated !== undefined) {
+        setIsAnimated(themeDefaults.animated);
       } else {
         setIsAnimated(false);
+      }
+      if (themeDefaults.animationType) {
+        setAnimationType(themeDefaults.animationType);
+      } else {
         setAnimationType('float');
+      }
+      if (themeDefaults.animationConfig) {
+        setAnimationSpeed(themeDefaults.animationConfig.duration ? 10 / themeDefaults.animationConfig.duration : 1.0);
+        setAnimationIntensity(themeDefaults.animationConfig.intensity || 1.0);
+      } else {
         setAnimationSpeed(1.0);
         setAnimationIntensity(1.0);
       }
 
-      // Don't apply theme's container animation to demo state - let the MeshGradient component handle theme defaults
-      // The demo state should represent user preferences, not theme defaults
-      
+      // Apply container animation defaults - but don't override user's explicit preferences
+      if (themeDefaults.containerAnimation) {
+        // Only apply theme's container animation for orbs, backgrounds should stay 'none'
+        if (displayMode !== 'background') {
+          setContainerAnimation(themeDefaults.containerAnimation);
+        }
+      }
+      if (themeDefaults.containerAnimationConfig) {
+        setContainerAnimationSpeed(themeDefaults.containerAnimationConfig.duration ? 10 / themeDefaults.containerAnimationConfig.duration : 1.0);
+      } else {
+        setContainerAnimationSpeed(1.0);
+      }
+
       onThemeSelect?.(theme);
     }
   };
@@ -719,7 +767,7 @@ const MeshGradientDemo: React.FC<MeshGradientDemoProps> = ({
                 animated={isAnimated}
                 animationType={animationType}
                 animationConfig={getAnimationConfig()}
-                containerAnimation={'none'}
+                containerAnimation="none"
                 containerAnimationConfig={{
                   type: 'none',
                   duration: 10 / containerAnimationSpeed,
@@ -867,7 +915,7 @@ const MeshGradientDemo: React.FC<MeshGradientDemoProps> = ({
                   animationType={animationType}
                   animationSpeed={animationSpeed}
                   animationIntensity={animationIntensity}
-                  containerAnimation={containerAnimation}
+                  containerAnimation={'none'}
                   containerAnimationSpeed={containerAnimationSpeed}
                   mouseTracking={mouseTracking}
                   visualEffects={visualEffects}
