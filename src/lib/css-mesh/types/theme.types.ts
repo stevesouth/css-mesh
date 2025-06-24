@@ -1,4 +1,5 @@
 import React from 'react';
+import type { AnimationType, ContainerAnimationType } from './animation.types';
 
 // Available shape types
 export type ShapeType = 
@@ -59,6 +60,23 @@ export interface DropShadow {
   direction?: { x: number; y: number };
 }
 
+// Animation configuration for themes
+export interface ThemeAnimationConfig {
+  enabled: boolean;
+  type?: AnimationType;
+  duration?: number;
+  intensity?: number;
+  easing?: string;
+}
+
+// Container animation configuration for themes
+export interface ThemeContainerAnimationConfig {
+  enabled: boolean;
+  type?: ContainerAnimationType;
+  duration?: number;
+  easing?: string;
+}
+
 // Theme pack definition
 export interface ThemePack {
   backgroundColor: string;
@@ -66,6 +84,8 @@ export interface ThemePack {
   visualEffects?: VisualEffects;
   lighting3d?: Lighting3D;
   dropShadow?: DropShadow;
+  animation?: ThemeAnimationConfig;
+  containerAnimation?: ThemeContainerAnimationConfig;
 }
 
 // Collection of all theme packs

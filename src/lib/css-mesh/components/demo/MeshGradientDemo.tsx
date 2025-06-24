@@ -87,6 +87,16 @@ const MeshGradientDemo: React.FC<MeshGradientDemoProps> = ({
       setDropShadowOpacity(initialThemeData.dropShadow.opacity || 0.4);
       setDropShadowDirection(initialThemeData.dropShadow.direction || { x: 0, y: 8 });
     }
+    if (initialThemeData?.animation) {
+      setIsAnimated(initialThemeData.animation.enabled || false);
+      setAnimationType(initialThemeData.animation.type || 'float');
+      setAnimationSpeed(initialThemeData.animation.duration ? 10 / initialThemeData.animation.duration : 1.0);
+      setAnimationIntensity(initialThemeData.animation.intensity || 1.0);
+    }
+    if (initialThemeData?.containerAnimation) {
+      setContainerAnimation(initialThemeData.containerAnimation.type || 'none');
+      setContainerAnimationSpeed(initialThemeData.containerAnimation.duration ? 10 / initialThemeData.containerAnimation.duration : 1.0);
+    }
   }, [initialTheme]);
   
   // Expandable sections state - all panels open by default
@@ -201,6 +211,23 @@ const MeshGradientDemo: React.FC<MeshGradientDemoProps> = ({
         setDropShadowOpacity(0.4);
         setDropShadowDirection({ x: 0, y: 8 });
       }
+
+      // Apply theme's animation configuration or use defaults
+      if (themeData.animation) {
+        setIsAnimated(themeData.animation.enabled || false);
+        setAnimationType(themeData.animation.type || 'float');
+        // Convert duration back to speed (speed = 10 / duration)
+        setAnimationSpeed(themeData.animation.duration ? 10 / themeData.animation.duration : 1.0);
+        setAnimationIntensity(themeData.animation.intensity || 1.0);
+      } else {
+        setIsAnimated(false);
+        setAnimationType('float');
+        setAnimationSpeed(1.0);
+        setAnimationIntensity(1.0);
+      }
+
+      // Don't apply theme's container animation to demo state - let the MeshGradient component handle theme defaults
+      // The demo state should represent user preferences, not theme defaults
       
       onThemeSelect?.(theme);
     }
@@ -274,6 +301,23 @@ const MeshGradientDemo: React.FC<MeshGradientDemoProps> = ({
       setDropShadowOpacity(0.4);
       setDropShadowDirection({ x: 0, y: 8 });
     }
+
+    // Reset animation settings to theme defaults
+    if (themeData.animation) {
+      setIsAnimated(themeData.animation.enabled || false);
+      setAnimationType(themeData.animation.type || 'float');
+      setAnimationSpeed(themeData.animation.duration ? 10 / themeData.animation.duration : 1.0);
+      setAnimationIntensity(themeData.animation.intensity || 1.0);
+    } else {
+      setIsAnimated(false);
+      setAnimationType('float');
+      setAnimationSpeed(1.0);
+      setAnimationIntensity(1.0);
+    }
+
+    // Reset container animation to user default (none for backgrounds)
+    setContainerAnimation('none');
+    setContainerAnimationSpeed(1.0);
   };
 
   const handleAnimationChange = (animated: boolean, type?: AnimationType, speed?: number, intensity?: number) => {
@@ -675,9 +719,9 @@ const MeshGradientDemo: React.FC<MeshGradientDemoProps> = ({
                 animated={isAnimated}
                 animationType={animationType}
                 animationConfig={getAnimationConfig()}
-                containerAnimation={displayMode === 'orb' ? 'none' : containerAnimation}
+                containerAnimation={'none'}
                 containerAnimationConfig={{
-                  type: displayMode === 'orb' ? 'none' : containerAnimation,
+                  type: 'none',
                   duration: 10 / containerAnimationSpeed,
                   easing: 'linear'
                 }}

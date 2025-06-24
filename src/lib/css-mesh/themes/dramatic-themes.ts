@@ -4,6 +4,19 @@ import type { ThemeCollection } from '../types/theme.types';
 export const DRAMATIC_THEMES: ThemeCollection = {
   volcanic: {
     backgroundColor: '#1a0f0a',
+    animation: {
+      enabled: true,
+      type: 'morph',
+      duration: 4.35, // Speed 2.3 (10/2.3)
+      intensity: 2.7,
+      easing: 'ease-in-out',
+    },
+    containerAnimation: {
+      enabled: true,
+      type: 'rotation',
+      duration: 3.33, // Speed 3.0 (10/3.0)
+      easing: 'linear',
+    },
     shapes: [
       {
         id: 'volcanic-1',
@@ -53,6 +66,19 @@ export const DRAMATIC_THEMES: ThemeCollection = {
   },
   electric: {
     backgroundColor: '#0a0a23',
+    animation: {
+      enabled: true,
+      type: 'morph',
+      duration: 4.76, // Speed 2.1 (10/2.1)
+      intensity: 2.6,
+      easing: 'ease-in-out',
+    },
+    containerAnimation: {
+      enabled: true,
+      type: 'rotation',
+      duration: 3.13, // Speed 3.2 (10/3.2)
+      easing: 'linear',
+    },
     shapes: [
       {
         id: 'electric-1',
@@ -162,6 +188,19 @@ export const DRAMATIC_THEMES: ThemeCollection = {
   },
   neon: {
     backgroundColor: '#0d0d0d',
+    animation: {
+      enabled: true,
+      type: 'morph',
+      duration: 4.17, // Speed 2.4 (10/2.4)
+      intensity: 2.8,
+      easing: 'ease-in-out',
+    },
+    containerAnimation: {
+      enabled: true,
+      type: 'hue-rotation',
+      duration: 2.86, // Speed 3.5 (10/3.5)
+      easing: 'linear',
+    },
     shapes: [
       {
         id: 'neon-1',

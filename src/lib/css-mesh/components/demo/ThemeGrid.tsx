@@ -18,7 +18,7 @@ const THEME_GROUPS = {
   orb: {
     title: 'Orb Themes',
     description: 'High-contrast themes optimized for floating orb mode - perfect for AI assistants',
-    themes: ['cyberpunk', 'voidPulse', 'fireCore', 'deepSpace', 'shadowGlow', 'sunsetGlow', 'twilightDark', 'midnightGlow', 'crystalBlue', 'sunbeam', 'roseDawn', 'mintFresh', 'lavenderMist', 'dawnLight']
+    themes: ['cyberpunk', 'voidPulse', 'fireCore', 'deepSpace', 'shadowGlow', 'sunsetGlow', 'twilightDark', 'midnightGlow', 'prismBreak', 'cosmicStorm', 'neuralFire', 'crystalBlue', 'sunbeam', 'roseDawn', 'mintFresh', 'lavenderMist', 'dawnLight']
   },
   dramatic: {
     title: 'Dramatic Themes',

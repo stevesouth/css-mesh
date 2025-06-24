@@ -117,9 +117,32 @@ const MeshGradient: React.FC<MeshGradientProps> = ({
   const finalDropShadowOpacity = dropShadowOpacity !== undefined ? dropShadowOpacity : (themeDropShadow?.opacity || 0.4);
   const finalDropShadowDirection = dropShadowDirection !== undefined ? dropShadowDirection : (themeDropShadow?.direction || { x: 0, y: 8 });
 
-  // Determine animation type
-  const effectiveAnimationType: AnimationType = animated ? animationType : 'none';
-  const effectiveContainerAnimation: ContainerAnimationType = containerAnimation;
+  // Use theme's animation as default, allow override via props
+  const themeAnimation = selectedTheme.animation;
+  const themeContainerAnimation = selectedTheme.containerAnimation;
+  
+  // Determine if animations are enabled - use theme defaults if not explicitly set
+  const finalAnimated = animated !== undefined ? animated : (themeAnimation?.enabled || false);
+  const finalAnimationType = finalAnimated ? (animationType !== 'float' ? animationType : (themeAnimation?.type || 'float')) : 'none';
+  const finalContainerAnimation = containerAnimation;
+  
+  // Create effective animation configs using theme defaults
+  const effectiveAnimationConfig = {
+    duration: animationConfig?.duration || themeAnimation?.duration || 10,
+    intensity: animationConfig?.intensity || themeAnimation?.intensity || 1,
+    easing: animationConfig?.easing || themeAnimation?.easing || 'ease-in-out',
+  };
+  
+  const effectiveContainerAnimationConfig = {
+    duration: containerAnimationConfig?.duration || (finalContainerAnimation !== 'none' ? themeContainerAnimation?.duration : undefined) || 10,
+    easing: containerAnimationConfig?.easing || (finalContainerAnimation !== 'none' ? themeContainerAnimation?.easing : undefined) || 'linear',
+  };
+
+  // Determine final animation types
+  const effectiveAnimationType: AnimationType = finalAnimated ? finalAnimationType : 'none';
+  const effectiveContainerAnimation: ContainerAnimationType = finalContainerAnimation;
+  
+
   
   // Apply performance optimizations
   const optimizedShapes = performance === 'low' 
@@ -129,7 +152,7 @@ const MeshGradient: React.FC<MeshGradientProps> = ({
   // Generate container animation styles
   const containerAnimationStyles = getContainerAnimationStyles(
     effectiveContainerAnimation,
-    containerAnimationConfig?.duration || 10
+    effectiveContainerAnimationConfig.duration
   );
 
   // Helper function to get size in pixels for orb mode
@@ -208,8 +231,7 @@ const MeshGradient: React.FC<MeshGradientProps> = ({
   };
 
   // Generate animation keyframes if needed, with intensity scaling
-  const intensity = animationConfig?.intensity || 1;
-  const animationKeyframes = generateAnimationKeyframes(effectiveAnimationType, intensity);
+  const animationKeyframes = generateAnimationKeyframes(effectiveAnimationType, effectiveAnimationConfig.intensity);
   const containerKeyframes = generateContainerAnimationKeyframes(effectiveContainerAnimation);
 
   // Convert percentage blur to pixels based on container height
@@ -279,7 +301,7 @@ const MeshGradient: React.FC<MeshGradientProps> = ({
           const animationStyles = getAnimationStyles(
             effectiveAnimationType, 
             index,
-            animationConfig?.duration
+            effectiveAnimationConfig.duration
           );
           
           const blurInPixels = getBlurInPixels(shape.blur);

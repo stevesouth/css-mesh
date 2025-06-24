@@ -24,6 +24,19 @@ export const ORB_THEMES: ThemeCollection = {
       opacity: 0.15,
       direction: { x: 0, y: -3 },
     },
+    animation: {
+      enabled: true,
+      type: 'morph',
+      duration: 4.35, // Speed 2.3 (10/2.3)
+      intensity: 2.7,
+      easing: 'ease-in-out',
+    },
+    containerAnimation: {
+      enabled: true,
+      type: 'hue-rotation',
+      duration: 3.33, // Speed 3.0 (10/3.0)
+      easing: 'linear',
+    },
     shapes: [
       {
         id: 'cyberpunk-1',
@@ -90,6 +103,19 @@ export const ORB_THEMES: ThemeCollection = {
       size: 20,
       opacity: 0.15,
       direction: { x: 0, y: -3 },
+    },
+    animation: {
+      enabled: true,
+      type: 'morph',
+      duration: 5.0, // Speed 2.0 (10/2.0)
+      intensity: 2.4,
+      easing: 'ease-in-out',
+    },
+    containerAnimation: {
+      enabled: true,
+      type: 'rotation',
+      duration: 3.7, // Speed 2.7 (10/2.7)
+      easing: 'linear',
     },
     shapes: [
       {
@@ -158,6 +184,19 @@ export const ORB_THEMES: ThemeCollection = {
       opacity: 0.15,
       direction: { x: 0, y: -3 },
     },
+    animation: {
+      enabled: true,
+      type: 'morph',
+      duration: 4.55, // Speed 2.2 (10/2.2)
+      intensity: 2.5,
+      easing: 'ease-in-out',
+    },
+    containerAnimation: {
+      enabled: true,
+      type: 'hue-rotation',
+      duration: 3.45, // Speed 2.9 (10/2.9)
+      easing: 'linear',
+    },
     shapes: [
       {
         id: 'fire-1',
@@ -225,6 +264,19 @@ export const ORB_THEMES: ThemeCollection = {
       opacity: 0.15,
       direction: { x: 0, y: -3 },
     },
+    animation: {
+      enabled: true,
+      type: 'morph',
+      duration: 5.26, // Speed 1.9 (10/1.9)
+      intensity: 2.3,
+      easing: 'ease-in-out',
+    },
+    containerAnimation: {
+      enabled: true,
+      type: 'rotation',
+      duration: 4.0, // Speed 2.5 (10/2.5)
+      easing: 'linear',
+    },
     shapes: [
       {
         id: 'space-1',
@@ -291,6 +343,19 @@ export const ORB_THEMES: ThemeCollection = {
       size: 20,
       opacity: 0.15,
       direction: { x: 0, y: -3 },
+    },
+    animation: {
+      enabled: true,
+      type: 'morph',
+      duration: 4.76, // Speed 2.1 (10/2.1)
+      intensity: 2.6,
+      easing: 'ease-in-out',
+    },
+    containerAnimation: {
+      enabled: true,
+      type: 'hue-rotation',
+      duration: 3.57, // Speed 2.8 (10/2.8)
+      easing: 'linear',
     },
     shapes: [
       {
@@ -698,6 +763,19 @@ export const ORB_THEMES: ThemeCollection = {
       opacity: 0.15,
       direction: { x: 0, y: -3 },
     },
+    animation: {
+      enabled: true,
+      type: 'morph',
+      duration: 5.0, // Speed 2.0 (10/2.0)
+      intensity: 2.3,
+      easing: 'ease-in-out',
+    },
+    containerAnimation: {
+      enabled: true,
+      type: 'hue-rotation',
+      duration: 3.85, // Speed 2.6 (10/2.6)
+      easing: 'linear',
+    },
     shapes: [
       {
         id: 'sunset-glow-1',
@@ -823,14 +901,27 @@ export const ORB_THEMES: ThemeCollection = {
     },
     lighting3d: {
       enabled: true,
-      position: { x: 80, y: 10 },
-      intensity: 0.9,
+      position: { x: 60, y: 35 },
+      intensity: 1.0,
     },
     dropShadow: {
       enabled: true,
-      size: 20,
-      opacity: 0.15,
+      size: 18,
+      opacity: 0.3,
       direction: { x: 0, y: -3 },
+    },
+    animation: {
+      enabled: true,
+      type: 'morph',
+      duration: 5.88, // Speed 1.7 (10/1.7)
+      intensity: 2.1,
+      easing: 'ease-in-out',
+    },
+    containerAnimation: {
+      enabled: true,
+      type: 'hue-rotation',
+      duration: 3.7, // Speed 2.7 (10/2.7)
+      easing: 'linear',
     },
     shapes: [
       {
@@ -854,6 +945,7 @@ export const ORB_THEMES: ThemeCollection = {
         blur: 12,
         opacity: 0.85,
         zIndex: 2,
+        shape: 'rectangle',
       },
       {
         id: 'twilight-3',
@@ -865,6 +957,7 @@ export const ORB_THEMES: ThemeCollection = {
         blur: 12,
         opacity: 0.85,
         zIndex: 3,
+        shape: 'rectangle',
       },
       {
         id: 'twilight-4',
@@ -898,6 +991,19 @@ export const ORB_THEMES: ThemeCollection = {
       size: 20,
       opacity: 0.15,
       direction: { x: 0, y: -3 },
+    },
+    animation: {
+      enabled: true,
+      type: 'morph',
+      duration: 4.55, // Speed 2.2 (10/2.2)
+      intensity: 2.5,
+      easing: 'ease-in-out',
+    },
+    containerAnimation: {
+      enabled: true,
+      type: 'rotation',
+      duration: 3.57, // Speed 2.8 (10/2.8)
+      easing: 'linear',
     },
     shapes: [
       {
@@ -942,6 +1048,254 @@ export const ORB_THEMES: ThemeCollection = {
         gradient: 'radial-gradient(circle, #6366f1 0%, #4f46e5 40%, #4338ca 80%, #3730a3 100%)',
         blur: 15,
         opacity: 0.95,
+        zIndex: 4,
+      },
+    ],
+  },
+
+  // PREMIUM INTENSE ORB THEMES - Mixed shapes with high contrast
+
+  prismBreak: {
+    backgroundColor: '#0a0a0a',
+    visualEffects: {
+      saturation: 3.8,
+      contrast: 2.5,
+      brightness: 2.1,
+      hue: 15,
+    },
+    lighting3d: {
+      enabled: true,
+      position: { x: 65, y: 30 },
+      intensity: 1.1,
+    },
+    dropShadow: {
+      enabled: true,
+      size: 22,
+      opacity: 0.35,
+      direction: { x: 2, y: -4 },
+    },
+    animation: {
+      enabled: true,
+      type: 'morph',
+      duration: 4.76, // Speed 2.1 (10/2.1)
+      intensity: 2.4,
+      easing: 'ease-in-out',
+    },
+    containerAnimation: {
+      enabled: true,
+      type: 'rotation',
+      duration: 4.0, // Speed 2.5 (10/2.5)
+      easing: 'linear',
+    },
+    shapes: [
+      {
+        id: 'prism-1',
+        width: 85,
+        height: 85,
+        x: -22,
+        y: -22,
+        gradient: 'radial-gradient(circle, #ff0080 0%, #ff6b6b 30%, #ee5a24 70%, #ff9ff3 100%)',
+        blur: 14,
+        opacity: 0.92,
+        zIndex: 1,
+      },
+      {
+        id: 'prism-2',
+        width: 80,
+        height: 80,
+        x: 40,
+        y: -20,
+        gradient: 'radial-gradient(circle, #00ffff 0%, #74b9ff 50%, #0984e3 100%)',
+        blur: 11,
+        opacity: 0.88,
+        zIndex: 2,
+        shape: 'rectangle',
+      },
+      {
+        id: 'prism-3',
+        width: 80,
+        height: 80,
+        x: -20,
+        y: 40,
+        gradient: 'radial-gradient(circle, #00ff88 0%, #55a3ff 60%, #a29bfe 100%)',
+        blur: 11,
+        opacity: 0.88,
+        zIndex: 3,
+        shape: 'rectangle',
+      },
+      {
+        id: 'prism-4',
+        width: 85,
+        height: 85,
+        x: 37,
+        y: 37,
+        gradient: 'radial-gradient(circle, #fd79a8 0%, #fdcb6e 40%, #e17055 80%, #d63031 100%)',
+        blur: 14,
+        opacity: 0.92,
+        zIndex: 4,
+      },
+    ],
+  },
+
+  cosmicStorm: {
+    backgroundColor: '#1a0d2e',
+    visualEffects: {
+      saturation: 3.5,
+      contrast: 2.4,
+      brightness: 2.0,
+      hue: -10,
+    },
+    lighting3d: {
+      enabled: true,
+      position: { x: 55, y: 40 },
+      intensity: 0.95,
+    },
+    dropShadow: {
+      enabled: true,
+      size: 20,
+      opacity: 0.32,
+      direction: { x: -2, y: -2 },
+    },
+    animation: {
+      enabled: true,
+      type: 'morph',
+      duration: 5.26, // Speed 1.9 (10/1.9)
+      intensity: 2.2,
+      easing: 'ease-in-out',
+    },
+    containerAnimation: {
+      enabled: true,
+      type: 'hue-rotation',
+      duration: 3.33, // Speed 3.0 (10/3.0)
+      easing: 'linear',
+    },
+    shapes: [
+      {
+        id: 'cosmic-1',
+        width: 85,
+        height: 85,
+        x: -22,
+        y: -22,
+        gradient: 'radial-gradient(circle, #8b5cf6 0%, #7c3aed 30%, #5b21b6 70%, #4c1d95 100%)',
+        blur: 16,
+        opacity: 0.91,
+        zIndex: 1,
+      },
+      {
+        id: 'cosmic-2',
+        width: 80,
+        height: 80,
+        x: 40,
+        y: -20,
+        gradient: 'radial-gradient(circle, #06ffa5 0%, #00d4aa 50%, #0891b2 100%)',
+        blur: 13,
+        opacity: 0.87,
+        zIndex: 2,
+        shape: 'rectangle',
+      },
+      {
+        id: 'cosmic-3',
+        width: 80,
+        height: 80,
+        x: -20,
+        y: 40,
+        gradient: 'radial-gradient(circle, #ff6347 0%, #ff4500 60%, #dc143c 100%)',
+        blur: 13,
+        opacity: 0.87,
+        zIndex: 3,
+        shape: 'rectangle',
+      },
+      {
+        id: 'cosmic-4',
+        width: 85,
+        height: 85,
+        x: 37,
+        y: 37,
+        gradient: 'radial-gradient(circle, #ffd700 0%, #ffa500 40%, #ff69b4 80%, #da70d6 100%)',
+        blur: 16,
+        opacity: 0.91,
+        zIndex: 4,
+      },
+    ],
+  },
+
+  neuralFire: {
+    backgroundColor: '#2d1b4e',
+    visualEffects: {
+      saturation: 4.0,
+      contrast: 2.3,
+      brightness: 1.8,
+      hue: 5,
+    },
+    lighting3d: {
+      enabled: true,
+      position: { x: 70, y: 25 },
+      intensity: 1.05,
+    },
+    dropShadow: {
+      enabled: true,
+      size: 24,
+      opacity: 0.28,
+      direction: { x: 1, y: -5 },
+    },
+    animation: {
+      enabled: true,
+      type: 'morph',
+      duration: 4.35, // Speed 2.3 (10/2.3)
+      intensity: 2.6,
+      easing: 'ease-in-out',
+    },
+    containerAnimation: {
+      enabled: true,
+      type: 'rotation',
+      duration: 2.86, // Speed 3.5 (10/3.5)
+      easing: 'linear',
+    },
+    shapes: [
+      {
+        id: 'neural-1',
+        width: 85,
+        height: 85,
+        x: -22,
+        y: -22,
+        gradient: 'radial-gradient(circle, #ff3838 0%, #ff9500 30%, #ffdd00 70%, #ff6b9d 100%)',
+        blur: 17,
+        opacity: 0.93,
+        zIndex: 1,
+      },
+      {
+        id: 'neural-2',
+        width: 80,
+        height: 80,
+        x: 40,
+        y: -20,
+        gradient: 'radial-gradient(circle, #00f5ff 0%, #1e90ff 50%, #4169e1 100%)',
+        blur: 12,
+        opacity: 0.89,
+        zIndex: 2,
+        shape: 'rectangle',
+      },
+      {
+        id: 'neural-3',
+        width: 80,
+        height: 80,
+        x: -20,
+        y: 40,
+        gradient: 'radial-gradient(circle, #7fff00 0%, #32cd32 60%, #228b22 100%)',
+        blur: 12,
+        opacity: 0.89,
+        zIndex: 3,
+        shape: 'rectangle',
+      },
+      {
+        id: 'neural-4',
+        width: 85,
+        height: 85,
+        x: 37,
+        y: 37,
+        gradient: 'radial-gradient(circle, #ff1493 0%, #ff69b4 40%, #ba55d3 80%, #9370db 100%)',
+        blur: 17,
+        opacity: 0.93,
         zIndex: 4,
       },
     ],

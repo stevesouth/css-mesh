@@ -4,7 +4,7 @@ Animated gradient backgrounds using CSS blur effects and positioned ellipses - n
 
 ## ✨ Features
 
-- 🎨 **34 Built-in Themes** - Organized into Base, Orb, Dramatic, and Special categories
+- 🎨 **37 Built-in Themes** - Organized into Base, Orb, Dramatic, and Special categories
 - 🔮 **Orb Mode** - Floating circular gradients with 3D lighting and drop shadows
 - ⚡ **CSS-Based** - Pure CSS blur effects, no WebGL or shaders required
 - 🪶 **Lightweight** - Small bundle size, no heavy 3D dependencies
@@ -95,9 +95,9 @@ CSS Mesh creates beautiful animated gradients using pure CSS techniques:
 - Marketing sites
 - Any project wanting beautiful animated gradients
 
-## 🎨 Available Themes (34 Total)
+## 🎨 Available Themes (37 Total)
 
-### 🔮 Orb Themes (14) - Optimized for floating circular gradients
+### 🔮 Orb Themes (17) - Optimized for floating circular gradients
 | Theme | Style | Colors | Background |
 |-------|-------|---------|------------|
 | `cyberpunk` | Neon | Electric green & pink | Dark |
@@ -108,6 +108,9 @@ CSS Mesh creates beautiful animated gradients using pure CSS techniques:
 | `sunsetGlow` | Premium | Warm sunset enhanced | Dark |
 | `twilightDark` | Rich | Purple twilight colors | Dark |
 | `midnightGlow` | Electric | Bright blues & cyans | Black |
+| `prismBreak` | Intense | Neon prism colors | Dark |
+| `cosmicStorm` | Cosmic | Purple storm & neon | Dark |
+| `neuralFire` | Electric | Fire & neural colors | Dark |
 | `crystalBlue` | Cool | Crystal blue tones | Light |
 | `sunbeam` | Bright | Golden yellow rays | Light |
 | `roseDawn` | Elegant | Pink & purple dawn | Light |
