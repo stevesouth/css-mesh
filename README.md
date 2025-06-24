@@ -36,6 +36,10 @@ function App() {
 }
 ```
 
+## 🌐 Live Demo
+
+**[cssmesh.dev](https://cssmesh.dev)** - Explore all 20 themes, customize ellipses, try animations, and generate code in real-time.
+
 ## 🎨 CSS-Based Approach
 
 CSS Mesh creates beautiful animated gradients using pure CSS techniques:
@@ -53,9 +57,6 @@ CSS Mesh creates beautiful animated gradients using pure CSS techniques:
 - App backgrounds
 - Marketing sites
 - Any project wanting beautiful animated gradients
-
-### 🌐 Live Demo
-Check out all themes and features at **[cssmesh.dev](https://cssmesh.dev)**
 
 ## 🎨 Available Themes
 
