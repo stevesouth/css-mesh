@@ -4,7 +4,7 @@ Animated gradient backgrounds using CSS blur effects and positioned ellipses - n
 
 ## ✨ Features
 
-- 🎨 **11 Built-in Themes** - 7 base themes + 4 dramatic themes with large overlapping ellipses
+- 🎨 **20 Built-in Themes** - 10 dark themes + 10 light themes, carefully curated and organized
 - ⚡ **CSS-Based** - Pure CSS blur effects, no WebGL or shaders required
 - 🪶 **Lightweight** - Small bundle size, no heavy 3D dependencies
 - 🎛️ **Animation System** - 6 animation types: float, pulse, rotation, orbit, wave, hue
@@ -36,40 +36,56 @@ function App() {
 }
 ```
 
-## 🆚 Why CSS-Based?
+## 🎨 CSS-Based Approach
 
-Most mesh gradient libraries use WebGL shaders for complex 3D effects. CSS Mesh takes a different approach:
+CSS Mesh creates beautiful animated gradients using pure CSS techniques:
 
-### ✅ Advantages over Shader Libraries
-- **No WebGL required** - Works everywhere, better browser compatibility  
-- **Smaller bundle** - No Three.js or heavy 3D dependencies
-- **Easy to customize** - Standard CSS/React patterns, no GLSL knowledge needed
-- **Simpler integration** - Drop-in component with familiar React props
-- **Predictable performance** - CSS animations with known behavior
+### ✨ Key Qualities
+- **Pure CSS animations** - Leverages browser-native CSS blur and transforms
+- **Lightweight bundle** - Minimal dependencies, fast loading
+- **Familiar patterns** - Standard CSS/React patterns for easy customization
+- **Drop-in component** - Simple integration with familiar React props
+- **Reliable performance** - Predictable CSS animations that work everywhere
 
 ### 🎯 Perfect For
 - Landing page backgrounds
 - Hero sections  
 - App backgrounds
 - Marketing sites
-- Projects wanting animated gradients without WebGL complexity
+- Any project wanting beautiful animated gradients
+
+### 🌐 Live Demo
+Check out all themes and features at **[cssmesh.dev](https://cssmesh.dev)**
 
 ## 🎨 Available Themes
 
-### Base Themes (7)
+### Dark Themes (10)
 | Theme | Style | Colors |
 |-------|-------|---------|
 | `sunset` | Warm | Oranges & pinks |
 | `ocean` | Cool | Blues & teals |
 | `aurora` | Vibrant | Purples & greens |
 | `cosmic` | Dark | Deep space colors |
-| `electric` | Bold | Neon blues & purples |
-| `dreamy` | Light | Soft pastels |
 | `forest` | Natural | Greens & earth tones |
+| `monochrome` | Minimal | Grays & blues |
+| `volcanic` | Dramatic | Reds & oranges |
+| `electric` | Bold | Neon blues & purples |
+| `neon` | Vibrant | Bright neon colors |
+| `shapes` | Demo | Mixed geometric shapes |
 
-### Dramatic Themes (4)
-Large overlapping ellipses for bold visual impact:
-`volcanic`, `neon`, `galaxy`, `prism`
+### Light Themes (10)
+| Theme | Style | Colors |
+|-------|-------|---------|
+| `minimal` | Clean | Soft blues & grays |
+| `dreamy` | Soft | Pastel pinks & purples |
+| `spring` | Fresh | Light greens & pastels |
+| `sky` | Airy | Light blues & whites |
+| `cream` | Warm | Cream & beige tones |
+| `dawn` | Gentle | Soft oranges & pinks |
+| `pearl` | Elegant | Pearl & lavender |
+| `blush` | Delicate | Soft pinks & roses |
+| `lavender` | Serene | Purple & lavender |
+| `mint` | Cool | Mint green & aqua |
 
 ## 🎛️ Animation Types
 
