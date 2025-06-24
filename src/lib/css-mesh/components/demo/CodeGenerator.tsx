@@ -228,6 +228,7 @@ import { MeshGradient } from 'css-mesh';
     resize: 'vertical',
     minHeight: '200px',
     width: '100%',
+    boxSizing: 'border-box',
   };
 
   const copyToClipboard = async () => {
