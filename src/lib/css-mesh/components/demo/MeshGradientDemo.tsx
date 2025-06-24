@@ -130,11 +130,9 @@ const MeshGradientDemo: React.FC<MeshGradientDemoProps> = ({
        setAnimationSpeed(resolvedConfig.animationConfig.duration ? 10 / resolvedConfig.animationConfig.duration : 1.0);
        setAnimationIntensity(resolvedConfig.animationConfig.intensity);
        
-       // Only apply container animation for orbs, keep backgrounds as 'none'
-       if (displayMode !== 'background') {
-         setContainerAnimation(resolvedConfig.containerAnimation);
-         setContainerAnimationSpeed(resolvedConfig.containerAnimationConfig.duration ? 10 / resolvedConfig.containerAnimationConfig.duration : 1.0);
-       }
+       // Apply container animation from resolved config (already filtered for backgrounds)
+       setContainerAnimation(resolvedConfig.containerAnimation);
+       setContainerAnimationSpeed(resolvedConfig.containerAnimationConfig.duration ? 10 / resolvedConfig.containerAnimationConfig.duration : 1.0);
        
        setVisualEffects(resolvedConfig.visualEffects);
        setDropShadow(resolvedConfig.dropShadow ?? false);
@@ -167,14 +165,9 @@ const MeshGradientDemo: React.FC<MeshGradientDemoProps> = ({
     setAnimationSpeed(resolvedConfig.animationConfig.duration ? 10 / resolvedConfig.animationConfig.duration : 1.0);
     setAnimationIntensity(resolvedConfig.animationConfig.intensity);
     
-    // Reset container animation based on display mode
-    if (displayMode !== 'background') {
-      setContainerAnimation(resolvedConfig.containerAnimation);
-      setContainerAnimationSpeed(resolvedConfig.containerAnimationConfig.duration ? 10 / resolvedConfig.containerAnimationConfig.duration : 1.0);
-    } else {
-      setContainerAnimation('none');
-      setContainerAnimationSpeed(1.0);
-    }
+    // Reset container animation to theme defaults (already filtered for backgrounds)
+    setContainerAnimation(resolvedConfig.containerAnimation);
+    setContainerAnimationSpeed(resolvedConfig.containerAnimationConfig.duration ? 10 / resolvedConfig.containerAnimationConfig.duration : 1.0);
     
     // Reset mouse tracking to defaults
     setMouseTracking(resolvedConfig.mouseTracking);
@@ -229,10 +222,11 @@ const MeshGradientDemo: React.FC<MeshGradientDemoProps> = ({
       setContainerAnimation('rotation');
       setContainerAnimationSpeed(0.5); // Slower rotation for orbs
     } else if (mode === 'background') {
-      // Reset container animation for backgrounds (rotation doesn't make sense)
+      // Filter out rotation-based animations for backgrounds
       if (containerAnimation === 'rotation' || containerAnimation === 'hue-rotation') {
         setContainerAnimation('none');
       }
+      // 'hue' animation is still allowed for backgrounds
     }
   };
 
@@ -585,12 +579,12 @@ const MeshGradientDemo: React.FC<MeshGradientDemoProps> = ({
             }}>
               <MeshGradient 
                 theme={isCustomMode ? undefined : selectedTheme} 
+                shape="background" // Explicitly set as background so config resolver filters animations
                 animated={isAnimated}
                 animationType={animationType}
                 animationConfig={getAnimationConfig()}
-                containerAnimation="none"
+                // No containerAnimation prop - let config resolver handle theme filtering
                 containerAnimationConfig={{
-                  type: 'none',
                   duration: 10 / containerAnimationSpeed,
                   easing: 'linear'
                 }}
@@ -736,7 +730,7 @@ const MeshGradientDemo: React.FC<MeshGradientDemoProps> = ({
                   animationType={animationType}
                   animationSpeed={animationSpeed}
                   animationIntensity={animationIntensity}
-                  containerAnimation={'none'}
+                  containerAnimation={'none'} // Code examples show background usage
                   containerAnimationSpeed={containerAnimationSpeed}
                   mouseTracking={mouseTracking}
                   visualEffects={visualEffects}

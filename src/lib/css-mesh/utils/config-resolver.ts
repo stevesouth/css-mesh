@@ -222,7 +222,7 @@ export function getThemeDefaults(theme: ThemePack): Partial<MeshGradientProps> {
 
 /**
  * Special handling for container animation resolution
- * Background containers should always use 'none' regardless of theme
+ * Background containers don't support rotation-based animations
  */
 function resolveContainerAnimation(
   propValue: ContainerAnimationType | undefined,
@@ -234,12 +234,17 @@ function resolveContainerAnimation(
     return propValue;
   }
   
-  // Background containers should never animate regardless of theme
+  // Background containers don't support rotation-based animations
   // This includes both explicit 'background' shape and when no shape is specified (defaults to background)
   if (shape === 'background' || shape === undefined) {
-    return 'none';
+    // Filter out rotation-based animations for backgrounds
+    if (themeDefault === 'rotation' || themeDefault === 'hue-rotation') {
+      return 'none';
+    }
+    // Allow other animations like 'hue'
+    return themeDefault;
   }
   
-  // Otherwise use theme default
+  // Orbs support all container animations
   return themeDefault;
 } 

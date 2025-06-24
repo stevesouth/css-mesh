@@ -142,23 +142,77 @@ describe('config-resolver', () => {
     });
 
     describe('Container Animation Resolution (Bug Fixes)', () => {
-      it('should force containerAnimation to "none" for background shape', () => {
+      it('should filter out rotation-based animations for background shape', () => {
+        const themeWithRotation: ThemePack = {
+          ...mockTheme,
+          containerAnimation: {
+            enabled: true,
+            type: 'rotation',
+            duration: 5,
+            easing: 'linear'
+          }
+        };
         const props: MeshGradientProps = {
           shape: 'background'
         };
-        const result = resolveConfig(props, mockTheme);
+        const result = resolveConfig(props, themeWithRotation);
 
         expect(result.containerAnimation).toBe('none');
       });
 
-      it('should force containerAnimation to "none" when shape is undefined (defaults to background)', () => {
+      it('should filter out hue-rotation for background shape', () => {
+        const themeWithHueRotation: ThemePack = {
+          ...mockTheme,
+          containerAnimation: {
+            enabled: true,
+            type: 'hue-rotation',
+            duration: 5,
+            easing: 'linear'
+          }
+        };
+        const props: MeshGradientProps = {
+          shape: 'background'
+        };
+        const result = resolveConfig(props, themeWithHueRotation);
+
+        expect(result.containerAnimation).toBe('none');
+      });
+
+      it('should allow hue animation for background shape', () => {
+        const themeWithHue: ThemePack = {
+          ...mockTheme,
+          containerAnimation: {
+            enabled: true,
+            type: 'hue',
+            duration: 5,
+            easing: 'linear'
+          }
+        };
+        const props: MeshGradientProps = {
+          shape: 'background'
+        };
+        const result = resolveConfig(props, themeWithHue);
+
+        expect(result.containerAnimation).toBe('hue');
+      });
+
+      it('should filter out rotation when shape is undefined (defaults to background)', () => {
+        const themeWithRotation: ThemePack = {
+          ...mockTheme,
+          containerAnimation: {
+            enabled: true,
+            type: 'rotation',
+            duration: 5,
+            easing: 'linear'
+          }
+        };
         const props: MeshGradientProps = {};
-        const result = resolveConfig(props, mockTheme);
+        const result = resolveConfig(props, themeWithRotation);
 
         expect(result.containerAnimation).toBe('none');
       });
 
-      it('should allow containerAnimation from theme for orb shape', () => {
+      it('should allow all containerAnimations from theme for orb shape', () => {
         const props: MeshGradientProps = {
           shape: 'orb'
         };
@@ -167,15 +221,15 @@ describe('config-resolver', () => {
         expect(result.containerAnimation).toBe('rotation');
       });
 
-              it('should respect explicit containerAnimation prop even for orb', () => {
-          const props: MeshGradientProps = {
-            shape: 'orb',
-            containerAnimation: 'hue'
-          };
-          const result = resolveConfig(props, mockTheme);
-  
-          expect(result.containerAnimation).toBe('hue');
-        });
+      it('should respect explicit containerAnimation prop even for background', () => {
+        const props: MeshGradientProps = {
+          shape: 'background',
+          containerAnimation: 'hue'
+        };
+        const result = resolveConfig(props, mockTheme);
+
+        expect(result.containerAnimation).toBe('hue');
+      });
     });
 
     describe('Nested Object Merging (Bug Fixes)', () => {
