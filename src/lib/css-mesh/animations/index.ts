@@ -3,6 +3,7 @@ import { PULSE_ANIMATION, generatePulseKeyframes } from './pulse-animation';
 import { WAVE_ANIMATION, generateWaveKeyframes } from './wave-animation';
 import { ROTATION_ANIMATION, generateRotationKeyframes } from './rotation-animation';
 import { ORBIT_ANIMATION, generateOrbitKeyframes } from './orbit-animation';
+import { MORPH_ANIMATION, generateMorphKeyframes } from './morph-animation';
 import type { AnimationType, ContainerAnimationType, AnimationDefinition } from '../types/animation.types';
 
 // Animation registry for individual shapes
@@ -13,6 +14,7 @@ export const ANIMATIONS: Record<AnimationType, AnimationDefinition | null> = {
   wave: WAVE_ANIMATION,
   rotation: ROTATION_ANIMATION,
   orbit: ORBIT_ANIMATION,
+  morph: MORPH_ANIMATION,
 };
 
 // Container animation keyframes
@@ -27,12 +29,13 @@ export const CONTAINER_ANIMATIONS: Record<ContainerAnimationType, string | null>
 };
 
 // Keyframe generators for ellipse animations
-export const KEYFRAME_GENERATORS: Record<string, () => string> = {
+export const KEYFRAME_GENERATORS: Record<string, (intensity?: number) => string> = {
   float: generateFloatKeyframes,
   pulse: generatePulseKeyframes,
   wave: generateWaveKeyframes,
   rotation: generateRotationKeyframes,
   orbit: generateOrbitKeyframes,
+  morph: generateMorphKeyframes,
 };
 
 // Get animation definition by type
@@ -47,7 +50,12 @@ export const generateAnimationKeyframes = (type: AnimationType, intensity: numbe
   const generator = KEYFRAME_GENERATORS[type];
   if (!generator) return '';
   
-  // Generate base keyframes
+  // For newer animations that support intensity natively, pass it directly
+  if (type === 'morph') {
+    return generator(intensity);
+  }
+  
+  // Generate base keyframes for older animations
   const baseKeyframes = generator();
   
   // If intensity is 1, return as-is
@@ -122,5 +130,5 @@ export const getContainerAnimationStyles = (
 };
 
 // Export individual animations
-export { FLOAT_ANIMATION, PULSE_ANIMATION, WAVE_ANIMATION, ROTATION_ANIMATION, ORBIT_ANIMATION };
-export { generateFloatKeyframes, generatePulseKeyframes, generateWaveKeyframes, generateRotationKeyframes, generateOrbitKeyframes }; 
+export { FLOAT_ANIMATION, PULSE_ANIMATION, WAVE_ANIMATION, ROTATION_ANIMATION, ORBIT_ANIMATION, MORPH_ANIMATION };
+export { generateFloatKeyframes, generatePulseKeyframes, generateWaveKeyframes, generateRotationKeyframes, generateOrbitKeyframes, generateMorphKeyframes }; 

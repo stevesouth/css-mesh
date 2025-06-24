@@ -30,7 +30,10 @@ interface SidebarProps {
     mouseTracking: boolean;
     shapes: boolean;
     effects: boolean;
+    orb: boolean;
   };
+  displayMode: 'background' | 'orb';
+  orbSize: number;
   onThemeChange: (theme: string) => void;
   onBackgroundColorChange: (color: string) => void;
   onResetToTheme: () => void;
@@ -41,6 +44,8 @@ interface SidebarProps {
   onToggleSection: (section: keyof SidebarProps['expandedSections']) => void;
   getCurrentShapes: () => ShapeConfig[];
   onShapesChange: (shapes: ShapeConfig[]) => void;
+  onDisplayModeChange: (mode: 'background' | 'orb') => void;
+  onOrbSizeChange: (size: number) => void;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({
@@ -57,6 +62,8 @@ const Sidebar: React.FC<SidebarProps> = ({
   mouseTracking,
   visualEffects,
   expandedSections,
+  displayMode,
+  orbSize,
   onThemeChange,
   onBackgroundColorChange,
   onResetToTheme,
@@ -67,6 +74,8 @@ const Sidebar: React.FC<SidebarProps> = ({
   onToggleSection,
   getCurrentShapes,
   onShapesChange,
+  onDisplayModeChange,
+  onOrbSizeChange,
 }) => {
   const sidebarStyle: React.CSSProperties = {
     position: 'fixed',
@@ -237,7 +246,74 @@ const Sidebar: React.FC<SidebarProps> = ({
         )}
       </div>
 
-      {/* 2. Ellipses Section - Core content editing */}
+      {/* 2. Display Mode Section - Choose between background and orb */}
+      <div style={sectionStyle}>
+        <div 
+          style={sectionHeaderStyle}
+          onClick={() => onToggleSection('orb')}
+        >
+          <span>🔮 Display Mode</span>
+          <span>{expandedSections.orb ? '−' : '+'}</span>
+        </div>
+        {expandedSections.orb && (
+          <div style={sectionContentStyle}>
+            <div style={{ marginBottom: '16px' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', marginBottom: '12px' }}>
+                <input 
+                  type="checkbox" 
+                  checked={displayMode === 'orb'} 
+                  onChange={(e) => onDisplayModeChange(e.target.checked ? 'orb' : 'background')}
+                />
+                Show as floating orb
+              </label>
+            </div>
+
+            {displayMode === 'orb' && (
+              <>
+                <div style={{ marginBottom: '16px' }}>
+                  <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px' }}>
+                    Orb Size: {orbSize}px
+                  </label>
+                  <input
+                    type="range"
+                    min="40"
+                    max="150"
+                    step="5"
+                    value={orbSize}
+                    onChange={(e) => onOrbSizeChange(Number(e.target.value))}
+                    aria-label="Orb size"
+                    style={{
+                      width: '100%',
+                      height: '4px',
+                      borderRadius: '2px',
+                      background: 'rgba(255, 255, 255, 0.2)',
+                      outline: 'none',
+                    }}
+                  />
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', opacity: 0.7, marginTop: '4px' }}>
+                    <span>40px</span>
+                    <span>150px</span>
+                  </div>
+                </div>
+
+                <div style={{ fontSize: '12px', opacity: 0.7, lineHeight: '1.4', marginBottom: '12px' }}>
+                  <strong>💡 Tip:</strong> Try "morph" animation for the best orb effect!
+                </div>
+              </>
+            )}
+
+            <div style={{ fontSize: '12px', opacity: 0.7, lineHeight: '1.4' }}>
+              <strong>Display Modes:</strong><br/>
+              • <strong>Background:</strong> Full gradient behind content<br/>
+              • <strong>Orb:</strong> Floating orb in chat interface<br/>
+              • Perfect for AI chatbots and voice assistants<br/>
+              • All animations and effects apply to both modes
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* 3. Shapes Section - Core content editing */}
       <div style={sectionStyle}>
         <div 
           style={sectionHeaderStyle}
@@ -256,7 +332,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         )}
       </div>
 
-      {/* 3. Animation Section - Add motion */}
+      {/* 4. Animation Section - Add motion */}
       <div style={sectionStyle}>
         <div 
           style={sectionHeaderStyle}
@@ -308,6 +384,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                     <option value="wave" style={{ backgroundColor: '#2d1b69', color: 'white' }}>Wave</option>
                     <option value="rotation" style={{ backgroundColor: '#2d1b69', color: 'white' }}>Rotation</option>
                     <option value="orbit" style={{ backgroundColor: '#2d1b69', color: 'white' }}>Orbit</option>
+                    <option value="morph" style={{ backgroundColor: '#2d1b69', color: 'white' }}>Morph</option>
                   </select>
                 </div>
 
@@ -369,7 +446,8 @@ const Sidebar: React.FC<SidebarProps> = ({
                   • Pulse: Breathing scale effect<br/>
                   • Wave: Synchronized wave patterns<br/>
                   • Rotation: Slow spinning motion<br/>
-                  • Orbit: Ellipses orbit around points<br/><br/>
+                  • Orbit: Ellipses orbit around points<br/>
+                  • Morph: Dynamic morphing with rotation<br/><br/>
                   <strong>Intensity:</strong> Controls animation movement amount<br/>
                   • Low: Subtle, small movements<br/>
                   • High: Dramatic, large movements
@@ -706,7 +784,6 @@ const Sidebar: React.FC<SidebarProps> = ({
           </div>
         )}
       </div>
-
 
 
 

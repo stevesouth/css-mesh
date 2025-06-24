@@ -31,6 +31,9 @@ export interface MeshGradientProps {
   };
   onThemeChange?: (themeName: string) => void;
   performance?: 'auto' | 'high' | 'low';
+  // Orb-specific props
+  shape?: 'background' | 'orb';
+  size?: number | 'sm' | 'md' | 'lg';
 }
 
 // Demo component props

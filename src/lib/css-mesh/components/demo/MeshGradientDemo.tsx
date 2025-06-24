@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import MeshGradient from '../MeshGradient';
-import { Sidebar, CodeGenerator, ThemeGrid, FeaturesSection } from '.';
+import { Sidebar, CodeGenerator, ThemeGrid, FeaturesSection, ChatPreview } from '.';
 import { ALL_THEMES, isLightTheme } from '../../themes';
 import type { BackgroundConfig, ShapeConfig } from '../../types/theme.types';
 import type { MeshGradientDemoProps } from '../../types/component.types';
@@ -37,6 +37,10 @@ const MeshGradientDemo: React.FC<MeshGradientDemoProps> = ({
   });
   const [isFullscreen, setIsFullscreen] = useState(false);
   
+  // Display mode state
+  const [displayMode, setDisplayMode] = useState<'background' | 'orb'>('background');
+  const [orbSize, setOrbSize] = useState(80);
+  
   // Visual effects state
   const [visualEffects, setVisualEffects] = useState({
     saturation: 1.0,
@@ -58,6 +62,7 @@ const MeshGradientDemo: React.FC<MeshGradientDemoProps> = ({
     mouseTracking: true,
     shapes: true,
     effects: true,
+    orb: true,
   });
 
   // Handle ESC key to exit fullscreen
@@ -180,6 +185,14 @@ const MeshGradientDemo: React.FC<MeshGradientDemoProps> = ({
 
   const handleVisualEffectsChange = (effects: typeof visualEffects) => {
     setVisualEffects(effects);
+  };
+
+  const handleDisplayModeChange = (mode: 'background' | 'orb') => {
+    setDisplayMode(mode);
+  };
+
+  const handleOrbSizeChange = (size: number) => {
+    setOrbSize(size);
   };
 
   // Check if there are customizations compared to the base theme
@@ -463,6 +476,8 @@ const MeshGradientDemo: React.FC<MeshGradientDemoProps> = ({
               mouseTracking={mouseTracking}
               visualEffects={visualEffects}
               expandedSections={expandedSections}
+              displayMode={displayMode}
+              orbSize={orbSize}
               onThemeChange={handleThemeChange}
               onBackgroundColorChange={handleBackgroundColorChange}
               onResetToTheme={handleResetToTheme}
@@ -473,6 +488,8 @@ const MeshGradientDemo: React.FC<MeshGradientDemoProps> = ({
               onToggleSection={toggleSection}
               getCurrentShapes={getCurrentShapes}
               onShapesChange={handleShapesChange}
+              onDisplayModeChange={handleDisplayModeChange}
+              onOrbSizeChange={handleOrbSizeChange}
             />
           )}
 
@@ -594,15 +611,39 @@ const MeshGradientDemo: React.FC<MeshGradientDemoProps> = ({
               </div>
 
               {/* Demo Preview Card */}
-              <div style={{ 
-                height: '400px', 
-                marginBottom: '40px', 
-                borderRadius: '16px', 
-                overflow: 'hidden',
-                border: '2px solid rgba(255, 255, 255, 0.2)',
-              }}>
-                {renderPreview()}
-              </div>
+              {displayMode === 'orb' ? (
+                <ChatPreview
+                  orbProps={{
+                    theme: isCustomMode ? undefined : selectedTheme,
+                    animated: isAnimated,
+                    animationType: animationType,
+                    animationConfig: getAnimationConfig(),
+                    containerAnimation: containerAnimation,
+                    containerAnimationConfig: {
+                      type: containerAnimation,
+                      duration: 10 / containerAnimationSpeed,
+                      easing: 'linear'
+                    },
+                    mouseTracking: mouseTracking,
+                    visualEffects: visualEffects,
+                    customConfig: isCustomMode ? {
+                      backgroundColor: backgroundColor,
+                      shapes: customShapes,
+                    } : getCurrentCustomConfig(),
+                  }}
+                  orbSize={orbSize}
+                />
+              ) : (
+                <div style={{ 
+                  height: '400px', 
+                  marginBottom: '40px', 
+                  borderRadius: '16px', 
+                  overflow: 'hidden',
+                  border: '2px solid rgba(255, 255, 255, 0.2)',
+                }}>
+                  {renderPreview()}
+                </div>
+              )}
 
               {/* Dynamic Code Generator */}
               {showCodeExamples && (
@@ -622,6 +663,8 @@ const MeshGradientDemo: React.FC<MeshGradientDemoProps> = ({
                     shapes: customShapes,
                   } : getCurrentCustomConfig()}
                   mainTextColor={mainTextColor}
+                  showOrbMode={displayMode === 'orb'}
+                  orbSize={orbSize}
                 />
               )}
 

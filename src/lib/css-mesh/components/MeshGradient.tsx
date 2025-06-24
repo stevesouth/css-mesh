@@ -22,6 +22,8 @@ const MeshGradient: React.FC<MeshGradientProps> = ({
   visualEffects,
   // onThemeChange, // TODO: Implement callback functionality
   performance = 'auto',
+  shape = 'background',
+  size,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerHeight, setContainerHeight] = useState(400); // Default fallback
@@ -112,13 +114,31 @@ const MeshGradient: React.FC<MeshGradientProps> = ({
     containerAnimationConfig?.duration || 10
   );
 
+  // Helper function to get size in pixels for orb mode
+  const getOrbSize = (): number => {
+    if (typeof size === 'number') return size;
+    if (typeof size === 'string') {
+      switch (size) {
+        case 'sm': return 50;
+        case 'md': return 80;
+        case 'lg': return 120;
+        default: return 80;
+      }
+    }
+    return 80; // default
+  };
+
+  const isOrb = shape === 'orb';
+  const orbSize = isOrb ? getOrbSize() : undefined;
+
   const containerStyles: React.CSSProperties = {
     position: 'relative',
-    width: '100%',
-    height: '100%',
+    width: isOrb ? `${orbSize}px` : '100%',
+    height: isOrb ? `${orbSize}px` : '100%',
     backgroundColor: finalConfig.backgroundColor,
     overflow: 'hidden',
     transform: 'translate3d(0, 0, 0)', // Force GPU acceleration for the container
+    borderRadius: isOrb ? '50%' : undefined,
     ...finalConfig.containerStyle,
     ...containerAnimationStyles,
     ...style,

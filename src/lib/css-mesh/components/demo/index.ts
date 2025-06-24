@@ -3,4 +3,5 @@ export { default as Sidebar } from './Sidebar';
 export { default as CodeGenerator } from './CodeGenerator';
 export { default as ThemeGrid } from './ThemeGrid';
 export { default as FeaturesSection } from './FeaturesSection';
-export { default as ShapeEditor } from './EllipseEditor'; 
+export { default as ShapeEditor } from './EllipseEditor';
+export { default as ChatPreview } from './ChatPreview'; 

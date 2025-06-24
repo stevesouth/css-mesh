@@ -25,6 +25,8 @@ interface CodeGeneratorProps {
   showCustom: boolean;
   customConfig?: Partial<BackgroundConfig>;
   mainTextColor: string;
+  showOrbMode?: boolean;
+  orbSize?: number;
 }
 
 const CodeGenerator: React.FC<CodeGeneratorProps> = ({
@@ -40,6 +42,8 @@ const CodeGenerator: React.FC<CodeGeneratorProps> = ({
   showCustom,
   customConfig,
   mainTextColor,
+  showOrbMode = false,
+  orbSize = 80,
 }) => {
   const [generatedCode, setGeneratedCode] = useState('');
   
@@ -88,6 +92,10 @@ const CodeGenerator: React.FC<CodeGeneratorProps> = ({
 
       const propsArray = [];
       if (selectedTheme) propsArray.push(`theme="${selectedTheme}"`);
+      if (showOrbMode) {
+        propsArray.push(`shape="orb"`);
+        if (orbSize !== 80) propsArray.push(`size={${orbSize}}`);
+      }
       if (isAnimated) {
         propsArray.push(`animated={true}`);
         if (animationType !== 'float') propsArray.push(`animationType="${animationType}"`);
@@ -105,7 +113,7 @@ const CodeGenerator: React.FC<CodeGeneratorProps> = ({
       }
       propsArray.push(`customConfig={customConfig}`);
 
-      return `// ${selectedTheme ? 'Customized Theme' : 'Custom Configuration'}
+      return `// ${showOrbMode ? 'Orb Mode - ' : ''}${selectedTheme ? 'Customized Theme' : 'Custom Configuration'}
 import { MeshGradient } from 'css-mesh';
 
 const customConfig = ${JSON.stringify(codeConfig, null, 2)};${additionalConfigs.length > 0 ? '\n' + additionalConfigs.join('\n') : ''}
@@ -113,7 +121,7 @@ const customConfig = ${JSON.stringify(codeConfig, null, 2)};${additionalConfigs.
 <MeshGradient
   ${propsArray.join('\n  ')}
 >
-  <YourContent />
+  ${showOrbMode ? '' : '<YourContent />'}
 </MeshGradient>`;
     } else {
       // Basic usage without customConfig
@@ -121,6 +129,13 @@ const customConfig = ${JSON.stringify(codeConfig, null, 2)};${additionalConfigs.
       
       if (selectedTheme) {
         basicProps.push(`theme="${selectedTheme}"`);
+      }
+
+      if (showOrbMode) {
+        basicProps.push(`shape="orb"`);
+        if (orbSize !== 80) {
+          basicProps.push(`size={${orbSize}}`);
+        }
       }
       
       if (isAnimated) {
@@ -178,7 +193,7 @@ import { MeshGradient } from 'css-mesh';
 </MeshGradient>`;
       }
 
-      // If only theme prop, keep it simple
+      // If only theme prop and not orb mode, keep it simple
       if (basicProps.length === 1 && basicProps[0].startsWith('theme=')) {
         return `// Theme Usage
 import { MeshGradient } from 'css-mesh';
@@ -188,20 +203,22 @@ import { MeshGradient } from 'css-mesh';
 </MeshGradient>`;
       }
 
-      return `// Basic Usage
+      const usageType = showOrbMode ? 'Orb Usage' : 'Basic Usage';
+      const content = showOrbMode ? '' : '\n  <YourContent />';
+
+      return `// ${usageType}
 import { MeshGradient } from 'css-mesh';
 
 <MeshGradient
   ${basicProps.join('\n  ')}
->
-  <YourContent />
+>${content}
 </MeshGradient>`;
     }
   };
 
   useEffect(() => {
     setGeneratedCode(generateCode());
-  }, [selectedTheme, isAnimated, animationType, animationSpeed, animationIntensity, containerAnimation, containerAnimationSpeed, mouseTracking, visualEffects, showCustom, customConfig]);
+  }, [selectedTheme, isAnimated, animationType, animationSpeed, animationIntensity, containerAnimation, containerAnimationSpeed, mouseTracking, visualEffects, showCustom, customConfig, showOrbMode, orbSize]);
 
   const cardStyle: React.CSSProperties = {
     backgroundColor: 'rgba(255, 255, 255, 0.1)',

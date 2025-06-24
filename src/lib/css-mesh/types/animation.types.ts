@@ -1,7 +1,7 @@
 import React from 'react';
 
 // Available animation types for individual shapes
-export type AnimationType = 'none' | 'float' | 'pulse' | 'wave' | 'rotation' | 'orbit';
+export type AnimationType = 'none' | 'float' | 'pulse' | 'wave' | 'rotation' | 'orbit' | 'morph';
 
 // Available container-level animation types
 export type ContainerAnimationType = 'none' | 'hue';
