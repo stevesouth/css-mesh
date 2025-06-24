@@ -40,6 +40,16 @@ function App() {
 
 **[cssmesh.dev](https://cssmesh.dev)** - Explore all 20 themes, customize ellipses, try animations, and generate code in real-time.
 
+## 📦 Installation
+
+```bash
+npm install css-mesh
+```
+
+**NPM Package**: [https://www.npmjs.com/package/css-mesh](https://www.npmjs.com/package/css-mesh)
+
+**GitHub Repository**: [https://github.com/stevesouth/css-mesh](https://github.com/stevesouth/css-mesh)
+
 ## 🎨 CSS-Based Approach
 
 CSS Mesh creates beautiful animated gradients using pure CSS techniques:

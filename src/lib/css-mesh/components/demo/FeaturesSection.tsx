@@ -60,8 +60,8 @@ const FeaturesSection: React.FC<FeaturesSectionProps> = ({
         <div style={{ fontSize: '16px', lineHeight: '1.6', opacity: 0.9, color: mainTextColor }}>
           <p style={{ marginBottom: '16px' }}>
             CSS Mesh is a lightweight React library for creating stunning mesh gradient backgrounds using pure CSS. 
-            Unlike complex WebGL or shader-based solutions, our CSS mesh gradients provide beautiful animated backgrounds 
-            that work seamlessly across all browsers and devices.
+            Our CSS-based approach provides beautiful animated backgrounds that work seamlessly across all browsers 
+            and devices with reliable performance.
           </p>
           <p style={{ marginBottom: '16px' }}>
             Perfect for modern web applications, CSS mesh gradients offer the visual appeal of complex gradient meshes 

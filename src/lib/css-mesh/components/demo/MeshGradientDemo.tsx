@@ -345,31 +345,58 @@ const MeshGradientDemo: React.FC<MeshGradientDemoProps> = ({
           </div>
 
           {isFullscreen && (
-            <a
-              href="https://github.com/yourusername/css-mesh"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                padding: '8px 12px',
-                backgroundColor: 'rgba(0, 0, 0, 0.3)',
-                backdropFilter: 'blur(10px)',
-                WebkitBackdropFilter: 'blur(10px)',
-                transform: 'translate3d(0, 0, 0)',
-                border: '1px solid rgba(255, 255, 255, 0.2)',
-                borderRadius: '8px',
-                color: 'white',
-                textDecoration: 'none',
-                fontSize: '14px',
-                fontWeight: '500',
-                opacity: 0.8,
-                transition: 'opacity 0.2s ease',
-              }}
-              onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
-              onMouseLeave={(e) => e.currentTarget.style.opacity = '0.8'}
-              title="View on GitHub"
-            >
-              ⭐ GitHub
-            </a>
+            <>
+              <a
+                href="https://www.npmjs.com/package/css-mesh"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  padding: '8px 12px',
+                  backgroundColor: 'rgba(0, 0, 0, 0.3)',
+                  backdropFilter: 'blur(10px)',
+                  WebkitBackdropFilter: 'blur(10px)',
+                  transform: 'translate3d(0, 0, 0)',
+                  border: '1px solid rgba(255, 255, 255, 0.2)',
+                  borderRadius: '8px',
+                  color: 'white',
+                  textDecoration: 'none',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  opacity: 0.8,
+                  transition: 'opacity 0.2s ease',
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
+                onMouseLeave={(e) => e.currentTarget.style.opacity = '0.8'}
+                title="Install via NPM"
+              >
+                📦 NPM
+              </a>
+              <a
+                href="https://github.com/stevesouth/css-mesh"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  padding: '8px 12px',
+                  backgroundColor: 'rgba(0, 0, 0, 0.3)',
+                  backdropFilter: 'blur(10px)',
+                  WebkitBackdropFilter: 'blur(10px)',
+                  transform: 'translate3d(0, 0, 0)',
+                  border: '1px solid rgba(255, 255, 255, 0.2)',
+                  borderRadius: '8px',
+                  color: 'white',
+                  textDecoration: 'none',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  opacity: 0.8,
+                  transition: 'opacity 0.2s ease',
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
+                onMouseLeave={(e) => e.currentTarget.style.opacity = '0.8'}
+                title="View on GitHub"
+              >
+                ⭐ GitHub
+              </a>
+            </>
           )}
           
           <button
@@ -498,37 +525,72 @@ const MeshGradientDemo: React.FC<MeshGradientDemoProps> = ({
                 <h1 style={{ color: mainTextColor, fontSize: '2.5rem', margin: 0 }}>
                   CSS Mesh Gradients
                 </h1>
-                <a
-                  href="https://github.com/yourusername/css-mesh"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <div
                   style={{
                     position: 'absolute',
                     top: 0,
                     right: 0,
-                    padding: '8px 16px',
-                    backgroundColor: 'rgba(0, 0, 0, 0.3)',
-                    backdropFilter: 'blur(10px)',
-                    WebkitBackdropFilter: 'blur(10px)',
-                    transform: 'translate3d(0, 0, 0)',
-                    border: '1px solid rgba(255, 255, 255, 0.2)',
-                    borderRadius: '8px',
-                    color: 'white',
-                    textDecoration: 'none',
-                    fontSize: '14px',
-                    fontWeight: '500',
-                    opacity: 0.8,
-                    transition: 'opacity 0.2s ease',
                     display: 'flex',
-                    alignItems: 'center',
-                    gap: '6px',
+                    gap: '8px',
                   }}
-                  onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
-                  onMouseLeave={(e) => e.currentTarget.style.opacity = '0.8'}
-                  title="View on GitHub"
                 >
-                  ⭐ GitHub
-                </a>
+                  <a
+                    href="https://www.npmjs.com/package/css-mesh"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      padding: '8px 12px',
+                      backgroundColor: 'rgba(0, 0, 0, 0.3)',
+                      backdropFilter: 'blur(10px)',
+                      WebkitBackdropFilter: 'blur(10px)',
+                      transform: 'translate3d(0, 0, 0)',
+                      border: '1px solid rgba(255, 255, 255, 0.2)',
+                      borderRadius: '8px',
+                      color: 'white',
+                      textDecoration: 'none',
+                      fontSize: '14px',
+                      fontWeight: '500',
+                      opacity: 0.8,
+                      transition: 'opacity 0.2s ease',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
+                    onMouseLeave={(e) => e.currentTarget.style.opacity = '0.8'}
+                    title="Install via NPM"
+                  >
+                    📦 NPM
+                  </a>
+                  <a
+                    href="https://github.com/stevesouth/css-mesh"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      padding: '8px 12px',
+                      backgroundColor: 'rgba(0, 0, 0, 0.3)',
+                      backdropFilter: 'blur(10px)',
+                      WebkitBackdropFilter: 'blur(10px)',
+                      transform: 'translate3d(0, 0, 0)',
+                      border: '1px solid rgba(255, 255, 255, 0.2)',
+                      borderRadius: '8px',
+                      color: 'white',
+                      textDecoration: 'none',
+                      fontSize: '14px',
+                      fontWeight: '500',
+                      opacity: 0.8,
+                      transition: 'opacity 0.2s ease',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
+                    onMouseLeave={(e) => e.currentTarget.style.opacity = '0.8'}
+                    title="View on GitHub"
+                  >
+                    ⭐ GitHub
+                  </a>
+                </div>
               </div>
 
               {/* Demo Preview Card */}
