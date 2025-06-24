@@ -82,6 +82,11 @@ const MeshGradientDemo: React.FC<MeshGradientDemoProps> = ({
         intensity: initialThemeData.lighting3d.intensity || 0.3,
       });
     }
+    if (initialThemeData?.dropShadow) {
+      setDropShadow(initialThemeData.dropShadow.size || true);
+      setDropShadowOpacity(initialThemeData.dropShadow.opacity || 0.4);
+      setDropShadowDirection(initialThemeData.dropShadow.direction || { x: 0, y: 8 });
+    }
   }, [initialTheme]);
   
   // Expandable sections state - all panels open by default
@@ -185,6 +190,17 @@ const MeshGradientDemo: React.FC<MeshGradientDemoProps> = ({
           intensity: 0.3,
         });
       }
+
+      // Apply theme's drop shadow or use defaults
+      if (themeData.dropShadow) {
+        setDropShadow(themeData.dropShadow.size || true);
+        setDropShadowOpacity(themeData.dropShadow.opacity || 0.4);
+        setDropShadowDirection(themeData.dropShadow.direction || { x: 0, y: 8 });
+      } else {
+        setDropShadow(false);
+        setDropShadowOpacity(0.4);
+        setDropShadowDirection({ x: 0, y: 8 });
+      }
       
       onThemeSelect?.(theme);
     }
@@ -232,6 +248,31 @@ const MeshGradientDemo: React.FC<MeshGradientDemoProps> = ({
         brightness: 1.0,
         hue: 0,
       });
+    }
+
+    // Reset visual enhancements to theme defaults
+    if (themeData.lighting3d) {
+      setLighting3d({
+        enabled: themeData.lighting3d.enabled || false,
+        position: themeData.lighting3d.position || { x: 30, y: 30 },
+        intensity: themeData.lighting3d.intensity || 0.3,
+      });
+    } else {
+      setLighting3d({
+        enabled: false,
+        position: { x: 30, y: 30 },
+        intensity: 0.3,
+      });
+    }
+
+    if (themeData.dropShadow) {
+      setDropShadow(themeData.dropShadow.size || true);
+      setDropShadowOpacity(themeData.dropShadow.opacity || 0.4);
+      setDropShadowDirection(themeData.dropShadow.direction || { x: 0, y: 8 });
+    } else {
+      setDropShadow(false);
+      setDropShadowOpacity(0.4);
+      setDropShadowDirection({ x: 0, y: 8 });
     }
   };
 
