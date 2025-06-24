@@ -40,6 +40,8 @@ function App() {
 
 **[cssmesh.dev](https://cssmesh.dev)** - Explore all 20 themes, customize ellipses, try animations, and generate code in real-time.
 
+![CSS Mesh Demo Interface](./public/screenshot.png)
+
 ## 📦 Installation
 
 ```bash
