@@ -1,10 +1,11 @@
 import { BASE_THEMES } from './base-themes';
 import { DRAMATIC_THEMES } from './dramatic-themes';
+import { ORB_THEMES } from './orb-themes';
 import type { ThemeCollection } from '../types/theme.types';
 
-// Organized theme collection: 10 Dark themes first, then 10 Light themes
+// Organized theme collection: Now includes 10 orb-focused themes + existing themes
 export const ALL_THEMES: ThemeCollection = {
-  // === DARK THEMES (10) ===
+  // === DARK THEMES ===
   sunset: BASE_THEMES.sunset,
   ocean: BASE_THEMES.ocean,
   aurora: BASE_THEMES.aurora,
@@ -14,6 +15,14 @@ export const ALL_THEMES: ThemeCollection = {
   volcanic: DRAMATIC_THEMES.volcanic,
   electric: DRAMATIC_THEMES.electric,
   neon: DRAMATIC_THEMES.neon,
+  
+  // === DARK ORB THEMES ===
+  cyberpunk: ORB_THEMES.cyberpunk,
+  voidPulse: ORB_THEMES.voidPulse,
+  fireCore: ORB_THEMES.fireCore,
+  deepSpace: ORB_THEMES.deepSpace,
+  shadowGlow: ORB_THEMES.shadowGlow,
+  
   shapes: {
     backgroundColor: '#1a1a2e',
     shapes: [
@@ -69,7 +78,7 @@ export const ALL_THEMES: ThemeCollection = {
     ],
   },
 
-  // === LIGHT THEMES (10) ===
+  // === LIGHT THEMES ===
   minimal: BASE_THEMES.minimal,
   dreamy: DRAMATIC_THEMES.dreamy,
   spring: BASE_THEMES.spring,
@@ -78,6 +87,13 @@ export const ALL_THEMES: ThemeCollection = {
   dawn: BASE_THEMES.dawn,
   pearl: BASE_THEMES.pearl,
   blush: BASE_THEMES.blush,
+  
+  // === LIGHT ORB THEMES ===
+  crystalBlue: ORB_THEMES.crystalBlue,
+  sunbeam: ORB_THEMES.sunbeam,
+  roseDawn: ORB_THEMES.roseDawn,
+  mintFresh: ORB_THEMES.mintFresh,
+  lavenderMist: ORB_THEMES.lavenderMist,
   lavender: {
     backgroundColor: '#f8f4ff',
     shapes: [
@@ -157,16 +173,24 @@ export const ALL_THEMES: ThemeCollection = {
 };
 
 // Export individual collections for backward compatibility
-export { BASE_THEMES, DRAMATIC_THEMES };
+export { BASE_THEMES, DRAMATIC_THEMES, ORB_THEMES };
 
 // Export theme names in the new order (dark first, then light)
 export const THEME_NAMES = Object.keys(ALL_THEMES) as string[];
 
-// Dark themes (first 10)
-export const DARK_THEMES = THEME_NAMES.slice(0, 10);
+// Dark themes (includes orb themes)
+export const DARK_THEMES = [
+  'sunset', 'ocean', 'aurora', 'cosmic', 'forest', 'monochrome', 
+  'volcanic', 'electric', 'neon', 'cyberpunk', 'voidPulse', 
+  'fireCore', 'deepSpace', 'shadowGlow', 'shapes'
+];
 
-// Light themes (last 10)  
-export const LIGHT_THEMES = THEME_NAMES.slice(10, 20);
+// Light themes (includes orb themes)
+export const LIGHT_THEMES = [
+  'minimal', 'dreamy', 'spring', 'sky', 'cream', 'dawn', 
+  'pearl', 'blush', 'crystalBlue', 'sunbeam', 'roseDawn', 
+  'mintFresh', 'lavenderMist', 'lavender', 'mint'
+];
 
 // Helper function to get a theme by name
 export const getTheme = (themeName: string) => {
@@ -176,4 +200,15 @@ export const getTheme = (themeName: string) => {
 // Helper function to check if theme is light
 export const isLightTheme = (themeName: string): boolean => {
   return LIGHT_THEMES.includes(themeName);
+};
+
+// List of orb-optimized themes
+export const ORB_THEMES_LIST = [
+  'cyberpunk', 'voidPulse', 'fireCore', 'deepSpace', 'shadowGlow',
+  'crystalBlue', 'sunbeam', 'roseDawn', 'mintFresh', 'lavenderMist'
+];
+
+// Helper function to check if theme is orb-optimized
+export const isOrbTheme = (themeName: string): boolean => {
+  return ORB_THEMES_LIST.includes(themeName);
 }; 

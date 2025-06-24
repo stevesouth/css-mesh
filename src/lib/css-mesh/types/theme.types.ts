@@ -36,10 +36,19 @@ export interface BackgroundConfig {
   containerStyle?: React.CSSProperties;
 }
 
+// Visual effects configuration
+export interface VisualEffects {
+  saturation?: number;
+  contrast?: number;
+  brightness?: number;
+  hue?: number;
+}
+
 // Theme pack definition
 export interface ThemePack {
   backgroundColor: string;
   shapes: ShapeConfig[];
+  visualEffects?: VisualEffects;
 }
 
 // Collection of all theme packs

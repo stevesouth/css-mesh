@@ -26,6 +26,91 @@ export const CONTAINER_ANIMATIONS: Record<ContainerAnimationType, string | null>
       100% { filter: hue-rotate(360deg); }
     }
   `,
+  rotation: `
+    @keyframes css-mesh-container-rotation {
+      0% { 
+        transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+      }
+      5% { 
+        transform: translate3d(0.2%, -0.2%, 0) rotate(10deg) scale(1);
+      }
+      15% { 
+        transform: translate3d(0.4%, -0.4%, 0) rotate(60deg) scale(1);
+      }
+      25% { 
+        transform: translate3d(0.5%, -0.5%, 0) rotate(90deg) scale(1);
+      }
+      35% { 
+        transform: translate3d(0.3%, -0.7%, 0) rotate(110deg) scale(1);
+      }
+      50% { 
+        transform: translate3d(0, 0, 0) rotate(180deg) scale(1);
+      }
+      60% { 
+        transform: translate3d(-0.2%, 0.2%, 0) rotate(200deg) scale(1);
+      }
+      70% { 
+        transform: translate3d(-0.4%, 0.4%, 0) rotate(250deg) scale(1);
+      }
+      80% { 
+        transform: translate3d(-0.5%, 0.5%, 0) rotate(290deg) scale(1);
+      }
+      90% { 
+        transform: translate3d(-0.2%, 0.4%, 0) rotate(330deg) scale(1);
+      }
+      100% { 
+        transform: translate3d(0, 0, 0) rotate(360deg) scale(1);
+      }
+    }
+  `,
+  'hue-rotation': `
+    @keyframes css-mesh-container-hue-rotation {
+      0% { 
+        transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+        filter: hue-rotate(0deg);
+      }
+      5% { 
+        transform: translate3d(0.2%, -0.2%, 0) rotate(10deg) scale(1);
+        filter: hue-rotate(10deg);
+      }
+      15% { 
+        transform: translate3d(0.4%, -0.4%, 0) rotate(60deg) scale(1);
+        filter: hue-rotate(60deg);
+      }
+      25% { 
+        transform: translate3d(0.5%, -0.5%, 0) rotate(90deg) scale(1);
+        filter: hue-rotate(90deg);
+      }
+      35% { 
+        transform: translate3d(0.3%, -0.7%, 0) rotate(110deg) scale(1);
+        filter: hue-rotate(110deg);
+      }
+      50% { 
+        transform: translate3d(0, 0, 0) rotate(180deg) scale(1);
+        filter: hue-rotate(180deg);
+      }
+      60% { 
+        transform: translate3d(-0.2%, 0.2%, 0) rotate(200deg) scale(1);
+        filter: hue-rotate(200deg);
+      }
+      70% { 
+        transform: translate3d(-0.4%, 0.4%, 0) rotate(250deg) scale(1);
+        filter: hue-rotate(250deg);
+      }
+      80% { 
+        transform: translate3d(-0.5%, 0.5%, 0) rotate(290deg) scale(1);
+        filter: hue-rotate(290deg);
+      }
+      90% { 
+        transform: translate3d(-0.2%, 0.4%, 0) rotate(330deg) scale(1);
+        filter: hue-rotate(330deg);
+      }
+      100% { 
+        transform: translate3d(0, 0, 0) rotate(360deg) scale(1);
+        filter: hue-rotate(360deg);
+      }
+    }
+  `,
 };
 
 // Keyframe generators for ellipse animations
@@ -121,11 +206,24 @@ export const getContainerAnimationStyles = (
 ): React.CSSProperties => {
   if (type === 'none') return {};
   
-  const animationName = type === 'hue' ? 'css-mesh-container-hue' : '';
+  let animationName = '';
+  switch (type) {
+    case 'hue':
+      animationName = 'css-mesh-container-hue';
+      break;
+    case 'rotation':
+      animationName = 'css-mesh-container-rotation';
+      break;
+    case 'hue-rotation':
+      animationName = 'css-mesh-container-hue-rotation';
+      break;
+  }
+  
   if (!animationName) return {};
   
   return {
     animation: `${animationName} ${duration}s linear infinite`,
+    transformOrigin: 'center center', // Ensure rotation happens from center
   };
 };
 

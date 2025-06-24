@@ -1,6 +1,6 @@
 import React from 'react';
 import MeshGradient from '../MeshGradient';
-import { THEME_NAMES, ALL_THEMES, isLightTheme } from '../../themes';
+import { THEME_NAMES, ALL_THEMES, isLightTheme, isOrbTheme } from '../../themes';
 
 interface ThemeGridProps {
   selectedTheme: string;
@@ -72,6 +72,17 @@ const ThemeGrid: React.FC<ThemeGridProps> = ({
                 <h3 style={{ fontSize: '1.4rem', marginBottom: '8px', color: getTextColorForTheme(themeName) }}>
                   {themeName.charAt(0).toUpperCase() + themeName.slice(1)}
                 </h3>
+                {isOrbTheme(themeName) && (
+                  <div style={{ 
+                    fontSize: '0.75rem', 
+                    fontWeight: 'bold', 
+                    color: '#00ff88', 
+                    marginBottom: '6px',
+                    textShadow: '0 0 8px rgba(0, 255, 136, 0.3)'
+                  }}>
+                    🔮 ORB OPTIMISED
+                  </div>
+                )}
                 <p style={{ opacity: 0.8, fontSize: '0.9rem', color: getTextColorForTheme(themeName) }}>
                   {ALL_THEMES[themeName]?.shapes.length || 0} ellipse{(ALL_THEMES[themeName]?.shapes.length || 0) > 1 ? 's' : ''}
                 </p>

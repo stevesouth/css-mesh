@@ -53,6 +53,19 @@ const MeshGradientDemo: React.FC<MeshGradientDemoProps> = ({
   const [customShapes, setCustomShapes] = useState<ShapeConfig[]>(
     ALL_THEMES[initialTheme]?.shapes || []
   );
+
+  // Initialize visual effects from the initial theme
+  useEffect(() => {
+    const initialThemeData = ALL_THEMES[initialTheme];
+    if (initialThemeData?.visualEffects) {
+      setVisualEffects({
+        saturation: initialThemeData.visualEffects.saturation || 1.0,
+        contrast: initialThemeData.visualEffects.contrast || 1.0,
+        brightness: initialThemeData.visualEffects.brightness || 1.0,
+        hue: initialThemeData.visualEffects.hue || 0,
+      });
+    }
+  }, [initialTheme]);
   
   // Expandable sections state - all panels open by default
   const [expandedSections, setExpandedSections] = useState({
@@ -102,6 +115,13 @@ const MeshGradientDemo: React.FC<MeshGradientDemoProps> = ({
         zIndex: 1,
         shape: 'ellipse',
       }]);
+      // Reset to default visual effects for custom mode
+      setVisualEffects({
+        saturation: 1.0,
+        contrast: 1.0,
+        brightness: 1.0,
+        hue: 0,
+      });
       onThemeSelect?.(theme);
     } else {
       // Switch to theme mode - decide what to preserve
@@ -112,9 +132,26 @@ const MeshGradientDemo: React.FC<MeshGradientDemoProps> = ({
       setSelectedTheme(theme);
       setBackgroundColor(themeData.backgroundColor);
       
-      // Reset shapes and colors, but preserve behavior settings
+      // Reset shapes and apply theme's visual effects
       setCustomShapes([...themeData.shapes]);
-      // Keep: animations, visual effects, mouse tracking, container effects
+      
+      // Apply theme's visual effects or use defaults
+      if (themeData.visualEffects) {
+        setVisualEffects({
+          saturation: themeData.visualEffects.saturation || 1.0,
+          contrast: themeData.visualEffects.contrast || 1.0,
+          brightness: themeData.visualEffects.brightness || 1.0,
+          hue: themeData.visualEffects.hue || 0,
+        });
+      } else {
+        // Theme doesn't have visual effects, use defaults
+        setVisualEffects({
+          saturation: 1.0,
+          contrast: 1.0,
+          brightness: 1.0,
+          hue: 0,
+        });
+      }
       
       onThemeSelect?.(theme);
     }
@@ -147,12 +184,22 @@ const MeshGradientDemo: React.FC<MeshGradientDemoProps> = ({
       intensity: 0.3,
       radius: 30,
     });
-    setVisualEffects({
-      saturation: 1.0,
-      contrast: 1.0,
-      brightness: 1.0,
-      hue: 0,
-    });
+    // Reset visual effects to theme defaults
+    if (themeData.visualEffects) {
+      setVisualEffects({
+        saturation: themeData.visualEffects.saturation || 1.0,
+        contrast: themeData.visualEffects.contrast || 1.0,
+        brightness: themeData.visualEffects.brightness || 1.0,
+        hue: themeData.visualEffects.hue || 0,
+      });
+    } else {
+      setVisualEffects({
+        saturation: 1.0,
+        contrast: 1.0,
+        brightness: 1.0,
+        hue: 0,
+      });
+    }
   };
 
   const handleAnimationChange = (animated: boolean, type?: AnimationType, speed?: number, intensity?: number) => {
@@ -189,6 +236,19 @@ const MeshGradientDemo: React.FC<MeshGradientDemoProps> = ({
 
   const handleDisplayModeChange = (mode: 'background' | 'orb') => {
     setDisplayMode(mode);
+    
+    // Auto-optimize settings for orb mode
+    if (mode === 'orb') {
+      setIsAnimated(true);
+      setAnimationType('morph');
+      setContainerAnimation('rotation');
+      setContainerAnimationSpeed(0.5); // Slower rotation for orbs
+    } else if (mode === 'background') {
+      // Reset container animation for backgrounds (rotation doesn't make sense)
+      if (containerAnimation === 'rotation' || containerAnimation === 'hue-rotation') {
+        setContainerAnimation('none');
+      }
+    }
   };
 
   const handleOrbSizeChange = (size: number) => {
@@ -513,9 +573,9 @@ const MeshGradientDemo: React.FC<MeshGradientDemoProps> = ({
                 animated={isAnimated}
                 animationType={animationType}
                 animationConfig={getAnimationConfig()}
-                containerAnimation={containerAnimation}
+                containerAnimation={displayMode === 'orb' ? 'none' : containerAnimation}
                 containerAnimationConfig={{
-                  type: containerAnimation,
+                  type: displayMode === 'orb' ? 'none' : containerAnimation,
                   duration: 10 / containerAnimationSpeed,
                   easing: 'linear'
                 }}

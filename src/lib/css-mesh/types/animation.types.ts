@@ -4,7 +4,7 @@ import React from 'react';
 export type AnimationType = 'none' | 'float' | 'pulse' | 'wave' | 'rotation' | 'orbit' | 'morph';
 
 // Available container-level animation types
-export type ContainerAnimationType = 'none' | 'hue';
+export type ContainerAnimationType = 'none' | 'hue' | 'rotation' | 'hue-rotation';
 
 // Animation configuration for shapes
 export interface AnimationConfig {

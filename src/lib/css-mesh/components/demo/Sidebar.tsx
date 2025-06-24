@@ -631,6 +631,8 @@ const Sidebar: React.FC<SidebarProps> = ({
               >
                 <option value="none" style={{ backgroundColor: '#2d1b69', color: 'white' }}>None</option>
                 <option value="hue" style={{ backgroundColor: '#2d1b69', color: 'white' }}>Hue Shift</option>
+                <option value="rotation" style={{ backgroundColor: '#2d1b69', color: 'white' }}>Rotation</option>
+                <option value="hue-rotation" style={{ backgroundColor: '#2d1b69', color: 'white' }}>Hue + Rotation</option>
               </select>
             </div>
 
@@ -665,6 +667,8 @@ const Sidebar: React.FC<SidebarProps> = ({
             <div style={{ fontSize: '12px', opacity: 0.7, lineHeight: '1.4' }}>
               <strong>Container Effects:</strong><br/>
               • Hue Shift: Cycles through rainbow colors<br/>
+              • Rotation: Rotates entire container (perfect for orbs)<br/>
+              • Hue + Rotation: Combines both effects (amazing for orbs)<br/>
               • Applied to entire gradient, not individual shapes<br/>
               • Independent of ellipse animations
             </div>

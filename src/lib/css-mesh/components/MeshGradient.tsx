@@ -99,6 +99,10 @@ const MeshGradient: React.FC<MeshGradientProps> = ({
     containerStyle: customConfig?.containerStyle || {},
   };
 
+  // Use theme's visual effects as defaults, allow override via props
+  const defaultVisualEffects = selectedTheme.visualEffects || { saturation: 1, contrast: 1, brightness: 1, hue: 0 };
+  const finalVisualEffects = visualEffects || defaultVisualEffects;
+
   // Determine animation type
   const effectiveAnimationType: AnimationType = animated ? animationType : 'none';
   const effectiveContainerAnimation: ContainerAnimationType = containerAnimation;
@@ -220,8 +224,7 @@ const MeshGradient: React.FC<MeshGradientProps> = ({
         const mouseOffset = getMouseOffset(shape.x + shape.width / 2, shape.y + shape.height / 2);
         
         // Apply visual effects to the filter (all shapes use standard filter now)
-        const effects = visualEffects || { saturation: 1, contrast: 1, brightness: 1, hue: 0 };
-        const filterEffects = `blur(${blurInPixels}px) saturate(${effects.saturation}) contrast(${effects.contrast}) brightness(${effects.brightness}) hue-rotate(${effects.hue}deg)`;
+        const filterEffects = `blur(${blurInPixels}px) saturate(${finalVisualEffects.saturation}) contrast(${finalVisualEffects.contrast}) brightness(${finalVisualEffects.brightness}) hue-rotate(${finalVisualEffects.hue}deg)`;
         
         // Combine GPU acceleration with animation and mouse transforms
         const mouseTransform = mouseOffset.x !== 0 || mouseOffset.y !== 0 
