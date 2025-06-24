@@ -50,7 +50,17 @@ const DEFAULTS = {
 };
 
 // Complete resolved config with all required properties guaranteed
-interface ResolvedConfig extends MeshGradientProps {
+interface ResolvedConfig {
+  // Core props
+  theme?: string;
+  className: string;
+  style: React.CSSProperties;
+  children?: React.ReactNode;
+  customConfig?: Partial<BackgroundConfig>;
+  onThemeChange?: (themeName: string) => void;
+  
+  // Animation props - all required
+  animated: boolean;
   animationType: AnimationType;
   animationConfig: {
     duration: number;
@@ -64,26 +74,37 @@ interface ResolvedConfig extends MeshGradientProps {
     duration: number;
     easing: string;
   };
+  
+  // Interaction props - all required
   mouseTracking: {
     enabled: boolean;
     mode: 'attract' | 'repel';
     intensity: number;
     radius: number;
   };
+  
+  // Visual props - all required
   visualEffects: {
     saturation: number;
     contrast: number;
     brightness: number;
     hue: number;
   };
+  performance: 'auto' | 'high' | 'low';
+  shape: 'background' | 'orb';
+  size: number | 'sm' | 'md' | 'lg';
+  
+  // Enhancement props - all required
+  dropShadow: number | boolean;
   dropShadowDirection: { x: number; y: number };
   dropShadowOpacity: number;
-  size: number | 'sm' | 'md' | 'lg';
   lighting3d: {
     enabled: boolean;
     position: { x: number; y: number };
     intensity: number;
   };
+  
+  // Final resolved config
   finalConfig: BackgroundConfig;
 }
 

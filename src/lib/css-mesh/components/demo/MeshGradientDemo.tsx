@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import MeshGradient from '../MeshGradient';
 import { Sidebar, CodeGenerator, ThemeGrid, FeaturesSection, ChatPreview } from '.';
 import { ALL_THEMES, isLightTheme } from '../../themes';
-import { getThemeDefaults } from '../../utils/config-resolver';
+import { resolveConfig } from '../../utils/config-resolver';
 import type { BackgroundConfig, ShapeConfig } from '../../types/theme.types';
 import type { MeshGradientDemoProps } from '../../types/component.types';
 import type { AnimationType, ContainerAnimationType } from '../../types/animation.types';
@@ -16,26 +16,22 @@ const MeshGradientDemo: React.FC<MeshGradientDemoProps> = ({
   onAnimationChange,
   onCustomConfigChange,
 }) => {
+  // Get initial theme config using resolver
+  const initialThemeData = ALL_THEMES[initialTheme];
+  const initialResolvedConfig = initialThemeData 
+    ? resolveConfig({ shape: 'background' }, initialThemeData)
+    : resolveConfig({ shape: 'background' }, ALL_THEMES['sunset']!);
+
   const [selectedTheme, setSelectedTheme] = useState(initialTheme);
-  const [backgroundColor, setBackgroundColor] = useState(ALL_THEMES[initialTheme]?.backgroundColor || '#1a1a2e');
+  const [backgroundColor, setBackgroundColor] = useState(initialResolvedConfig.finalConfig.backgroundColor);
   const [isCustomMode, setIsCustomMode] = useState(false);
-  const [isAnimated, setIsAnimated] = useState(false);
-  const [animationType, setAnimationType] = useState<AnimationType>('float');
-  const [animationSpeed, setAnimationSpeed] = useState(1.0);
-  const [animationIntensity, setAnimationIntensity] = useState(1.0);
-  const [containerAnimation, setContainerAnimation] = useState<ContainerAnimationType>('none');
-  const [containerAnimationSpeed, setContainerAnimationSpeed] = useState(1.0);
-  const [mouseTracking, setMouseTracking] = useState<{
-    enabled: boolean;
-    mode: 'attract' | 'repel';
-    intensity: number;
-    radius: number;
-  }>({
-    enabled: false,
-    mode: 'attract',
-    intensity: 0.3,
-    radius: 30,
-  });
+  const [isAnimated, setIsAnimated] = useState(initialResolvedConfig.animated);
+  const [animationType, setAnimationType] = useState<AnimationType>(initialResolvedConfig.animationType);
+  const [animationSpeed, setAnimationSpeed] = useState(initialResolvedConfig.animationConfig.duration ? 10 / initialResolvedConfig.animationConfig.duration : 1.0);
+  const [animationIntensity, setAnimationIntensity] = useState(initialResolvedConfig.animationConfig.intensity);
+  const [containerAnimation, setContainerAnimation] = useState<ContainerAnimationType>(initialResolvedConfig.containerAnimation);
+  const [containerAnimationSpeed, setContainerAnimationSpeed] = useState(initialResolvedConfig.containerAnimationConfig.duration ? 10 / initialResolvedConfig.containerAnimationConfig.duration : 1.0);
+  const [mouseTracking, setMouseTracking] = useState(initialResolvedConfig.mouseTracking);
   const [isFullscreen, setIsFullscreen] = useState(false);
   
   // Display mode state
@@ -43,85 +39,20 @@ const MeshGradientDemo: React.FC<MeshGradientDemoProps> = ({
   const [orbSize, setOrbSize] = useState(80);
   
   // Visual effects state
-  const [visualEffects, setVisualEffects] = useState({
-    saturation: 1.0,
-    contrast: 1.0,
-    brightness: 1.0,
-    hue: 0,
-  });
+  const [visualEffects, setVisualEffects] = useState(initialResolvedConfig.visualEffects);
 
   // Visual enhancement state
-  const [dropShadow, setDropShadow] = useState<number | boolean>(false);
-  const [dropShadowOpacity, setDropShadowOpacity] = useState(0.4);
-  const [dropShadowDirection, setDropShadowDirection] = useState({ x: 0, y: 8 });
-  const [lighting3d, setLighting3d] = useState({
-    enabled: false,
-    position: { x: 30, y: 30 },
-    intensity: 0.3,
-  });
+  const [dropShadow, setDropShadow] = useState<number | boolean>(initialResolvedConfig.dropShadow);
+  const [dropShadowOpacity, setDropShadowOpacity] = useState(initialResolvedConfig.dropShadowOpacity);
+  const [dropShadowDirection, setDropShadowDirection] = useState(initialResolvedConfig.dropShadowDirection);
+  const [lighting3d, setLighting3d] = useState(initialResolvedConfig.lighting3d);
   
   // Dynamic shape state for editing - start with initial theme's shapes
   const [customShapes, setCustomShapes] = useState<ShapeConfig[]>(
-    ALL_THEMES[initialTheme]?.shapes || []
+    initialResolvedConfig.finalConfig.shapes
   );
 
-  // Initialize visual effects and lighting from the initial theme using config resolver
-  useEffect(() => {
-    const initialThemeData = ALL_THEMES[initialTheme];
-    if (initialThemeData) {
-      const themeDefaults = getThemeDefaults(initialThemeData);
-      
-      // Apply theme defaults for visual effects
-      if (themeDefaults.visualEffects) {
-        setVisualEffects({
-          saturation: themeDefaults.visualEffects.saturation ?? 1.0,
-          contrast: themeDefaults.visualEffects.contrast ?? 1.0,
-          brightness: themeDefaults.visualEffects.brightness ?? 1.0,
-          hue: themeDefaults.visualEffects.hue ?? 0,
-        });
-      }
-      
-      // Apply theme defaults for lighting
-      if (themeDefaults.lighting3d) {
-        setLighting3d({
-          enabled: themeDefaults.lighting3d.enabled || false,
-          position: themeDefaults.lighting3d.position || { x: 30, y: 30 },
-          intensity: themeDefaults.lighting3d.intensity || 0.3,
-        });
-      }
-      
-      // Apply theme defaults for drop shadow
-      if (themeDefaults.dropShadow !== undefined) {
-        setDropShadow(themeDefaults.dropShadow);
-      }
-      if (themeDefaults.dropShadowOpacity !== undefined) {
-        setDropShadowOpacity(themeDefaults.dropShadowOpacity);
-      }
-      if (themeDefaults.dropShadowDirection) {
-        setDropShadowDirection(themeDefaults.dropShadowDirection);
-      }
-      
-      // Apply theme defaults for animation
-      if (themeDefaults.animated !== undefined) {
-        setIsAnimated(themeDefaults.animated);
-      }
-      if (themeDefaults.animationType) {
-        setAnimationType(themeDefaults.animationType);
-      }
-      if (themeDefaults.animationConfig) {
-        setAnimationSpeed(themeDefaults.animationConfig.duration ? 10 / themeDefaults.animationConfig.duration : 1.0);
-        setAnimationIntensity(themeDefaults.animationConfig.intensity || 1.0);
-      }
-      
-      // Apply theme defaults for container animation  
-      if (themeDefaults.containerAnimation) {
-        setContainerAnimation(themeDefaults.containerAnimation);
-      }
-      if (themeDefaults.containerAnimationConfig) {
-        setContainerAnimationSpeed(themeDefaults.containerAnimationConfig.duration ? 10 / themeDefaults.containerAnimationConfig.duration : 1.0);
-      }
-    }
-  }, [initialTheme]);
+
   
   // Expandable sections state - all panels open by default
   const [expandedSections, setExpandedSections] = useState({
@@ -181,101 +112,35 @@ const MeshGradientDemo: React.FC<MeshGradientDemoProps> = ({
       });
       onThemeSelect?.(theme);
     } else {
-      // Switch to theme mode - apply theme defaults using config resolver
+      // Switch to theme mode - use config resolver to get all defaults
       const themeData = ALL_THEMES[theme];
       if (!themeData) return;
       
       setIsCustomMode(false);
       setSelectedTheme(theme);
-      setBackgroundColor(themeData.backgroundColor);
       
-      // Reset shapes
-      setCustomShapes([...themeData.shapes]);
+      // Use config resolver to get fully resolved configuration with all defaults
+      const resolvedConfig = resolveConfig({ shape: displayMode }, themeData);
       
-      // Apply theme defaults using config resolver
-      const themeDefaults = getThemeDefaults(themeData);
-      
-      // Apply visual effects defaults
-      if (themeDefaults.visualEffects) {
-        setVisualEffects({
-          saturation: themeDefaults.visualEffects.saturation ?? 1.0,
-          contrast: themeDefaults.visualEffects.contrast ?? 1.0,
-          brightness: themeDefaults.visualEffects.brightness ?? 1.0,
-          hue: themeDefaults.visualEffects.hue ?? 0,
-        });
-      } else {
-        // Theme doesn't have visual effects, use defaults
-        setVisualEffects({
-          saturation: 1.0,
-          contrast: 1.0,
-          brightness: 1.0,
-          hue: 0,
-        });
-      }
-
-      // Apply lighting3d defaults
-      if (themeDefaults.lighting3d) {
-        setLighting3d({
-          enabled: themeDefaults.lighting3d.enabled || false,
-          position: themeDefaults.lighting3d.position || { x: 30, y: 30 },
-          intensity: themeDefaults.lighting3d.intensity || 0.3,
-        });
-      } else {
-        setLighting3d({
-          enabled: false,
-          position: { x: 30, y: 30 },
-          intensity: 0.3,
-        });
-      }
-
-      // Apply drop shadow defaults
-      if (themeDefaults.dropShadow !== undefined) {
-        setDropShadow(themeDefaults.dropShadow);
-      } else {
-        setDropShadow(false);
-      }
-      if (themeDefaults.dropShadowOpacity !== undefined) {
-        setDropShadowOpacity(themeDefaults.dropShadowOpacity);
-      } else {
-        setDropShadowOpacity(0.4);
-      }
-      if (themeDefaults.dropShadowDirection) {
-        setDropShadowDirection(themeDefaults.dropShadowDirection);
-      } else {
-        setDropShadowDirection({ x: 0, y: 8 });
-      }
-
-      // Apply animation defaults  
-      if (themeDefaults.animated !== undefined) {
-        setIsAnimated(themeDefaults.animated);
-      } else {
-        setIsAnimated(false);
-      }
-      if (themeDefaults.animationType) {
-        setAnimationType(themeDefaults.animationType);
-      } else {
-        setAnimationType('float');
-      }
-      if (themeDefaults.animationConfig) {
-        setAnimationSpeed(themeDefaults.animationConfig.duration ? 10 / themeDefaults.animationConfig.duration : 1.0);
-        setAnimationIntensity(themeDefaults.animationConfig.intensity || 1.0);
-      } else {
-        setAnimationSpeed(1.0);
-        setAnimationIntensity(1.0);
-      }
-
-      // Apply container animation defaults - but don't override user's explicit preferences
-      if (themeDefaults.containerAnimation) {
-        // Only apply theme's container animation for orbs, backgrounds should stay 'none'
-        if (displayMode !== 'background') {
-          setContainerAnimation(themeDefaults.containerAnimation);
-        }
-      }
-      if (themeDefaults.containerAnimationConfig) {
-        setContainerAnimationSpeed(themeDefaults.containerAnimationConfig.duration ? 10 / themeDefaults.containerAnimationConfig.duration : 1.0);
-      } else {
-        setContainerAnimationSpeed(1.0);
-      }
+             // Apply resolved values to demo state
+       setBackgroundColor(resolvedConfig.finalConfig.backgroundColor);
+       setCustomShapes([...resolvedConfig.finalConfig.shapes]);
+       setIsAnimated(resolvedConfig.animated ?? false);
+       setAnimationType(resolvedConfig.animationType || 'float');
+       setAnimationSpeed(resolvedConfig.animationConfig.duration ? 10 / resolvedConfig.animationConfig.duration : 1.0);
+       setAnimationIntensity(resolvedConfig.animationConfig.intensity);
+       
+       // Only apply container animation for orbs, keep backgrounds as 'none'
+       if (displayMode !== 'background') {
+         setContainerAnimation(resolvedConfig.containerAnimation);
+         setContainerAnimationSpeed(resolvedConfig.containerAnimationConfig.duration ? 10 / resolvedConfig.containerAnimationConfig.duration : 1.0);
+       }
+       
+       setVisualEffects(resolvedConfig.visualEffects);
+       setDropShadow(resolvedConfig.dropShadow ?? false);
+       setDropShadowOpacity(resolvedConfig.dropShadowOpacity ?? 0.4);
+       setDropShadowDirection(resolvedConfig.dropShadowDirection || { x: 0, y: 8 });
+       setLighting3d(resolvedConfig.lighting3d);
 
       onThemeSelect?.(theme);
     }
@@ -291,81 +156,35 @@ const MeshGradientDemo: React.FC<MeshGradientDemoProps> = ({
     const themeData = ALL_THEMES[selectedTheme];
     if (!themeData) return;
     
-    // Reset everything to theme defaults
-    setBackgroundColor(themeData.backgroundColor);
-    setCustomShapes([...themeData.shapes]);
+    // Use config resolver to get clean theme defaults
+    const resolvedConfig = resolveConfig({ shape: displayMode }, themeData);
     
-    // Reset behavior settings to defaults
-    setIsAnimated(false);
-    setAnimationType('float');
-    setAnimationSpeed(1.0);
-    setAnimationIntensity(1.0);
-    setContainerAnimation('none');
-    setContainerAnimationSpeed(1.0);
-    setMouseTracking({
-      enabled: false,
-      mode: 'attract',
-      intensity: 0.3,
-      radius: 30,
-    });
-    // Reset visual effects to theme defaults
-    if (themeData.visualEffects) {
-      setVisualEffects({
-        saturation: themeData.visualEffects.saturation || 1.0,
-        contrast: themeData.visualEffects.contrast || 1.0,
-        brightness: themeData.visualEffects.brightness || 1.0,
-        hue: themeData.visualEffects.hue || 0,
-      });
+    // Reset everything to resolved theme defaults
+    setBackgroundColor(resolvedConfig.finalConfig.backgroundColor);
+    setCustomShapes([...resolvedConfig.finalConfig.shapes]);
+    setIsAnimated(resolvedConfig.animated);
+    setAnimationType(resolvedConfig.animationType);
+    setAnimationSpeed(resolvedConfig.animationConfig.duration ? 10 / resolvedConfig.animationConfig.duration : 1.0);
+    setAnimationIntensity(resolvedConfig.animationConfig.intensity);
+    
+    // Reset container animation based on display mode
+    if (displayMode !== 'background') {
+      setContainerAnimation(resolvedConfig.containerAnimation);
+      setContainerAnimationSpeed(resolvedConfig.containerAnimationConfig.duration ? 10 / resolvedConfig.containerAnimationConfig.duration : 1.0);
     } else {
-      setVisualEffects({
-        saturation: 1.0,
-        contrast: 1.0,
-        brightness: 1.0,
-        hue: 0,
-      });
+      setContainerAnimation('none');
+      setContainerAnimationSpeed(1.0);
     }
-
-    // Reset visual enhancements to theme defaults
-    if (themeData.lighting3d) {
-      setLighting3d({
-        enabled: themeData.lighting3d.enabled || false,
-        position: themeData.lighting3d.position || { x: 30, y: 30 },
-        intensity: themeData.lighting3d.intensity || 0.3,
-      });
-    } else {
-      setLighting3d({
-        enabled: false,
-        position: { x: 30, y: 30 },
-        intensity: 0.3,
-      });
-    }
-
-    if (themeData.dropShadow) {
-      setDropShadow(themeData.dropShadow.size || true);
-      setDropShadowOpacity(themeData.dropShadow.opacity || 0.4);
-      setDropShadowDirection(themeData.dropShadow.direction || { x: 0, y: 8 });
-    } else {
-      setDropShadow(false);
-      setDropShadowOpacity(0.4);
-      setDropShadowDirection({ x: 0, y: 8 });
-    }
-
-    // Reset animation settings to theme defaults
-    if (themeData.animation) {
-      setIsAnimated(themeData.animation.enabled || false);
-      setAnimationType(themeData.animation.type || 'float');
-      setAnimationSpeed(themeData.animation.duration ? 10 / themeData.animation.duration : 1.0);
-      setAnimationIntensity(themeData.animation.intensity || 1.0);
-    } else {
-      setIsAnimated(false);
-      setAnimationType('float');
-      setAnimationSpeed(1.0);
-      setAnimationIntensity(1.0);
-    }
-
-    // Reset container animation to user default (none for backgrounds)
-    setContainerAnimation('none');
-    setContainerAnimationSpeed(1.0);
+    
+    // Reset mouse tracking to defaults
+    setMouseTracking(resolvedConfig.mouseTracking);
+    
+    // Reset visual effects and enhancements
+    setVisualEffects(resolvedConfig.visualEffects);
+    setDropShadow(resolvedConfig.dropShadow);
+    setDropShadowOpacity(resolvedConfig.dropShadowOpacity);
+    setDropShadowDirection(resolvedConfig.dropShadowDirection);
+    setLighting3d(resolvedConfig.lighting3d);
   };
 
   const handleAnimationChange = (animated: boolean, type?: AnimationType, speed?: number, intensity?: number) => {
@@ -444,16 +263,19 @@ const MeshGradientDemo: React.FC<MeshGradientDemoProps> = ({
     const baseTheme = ALL_THEMES[selectedTheme];
     if (!baseTheme) return false;
     
+    // Get resolved theme defaults for comparison
+    const resolvedBaseConfig = resolveConfig({ shape: displayMode }, baseTheme);
+    
     // Check background color
-    if (backgroundColor !== baseTheme.backgroundColor) return true;
+    if (backgroundColor !== resolvedBaseConfig.finalConfig.backgroundColor) return true;
     
     // Check shapes (simplified check - could be more sophisticated)
-    if (customShapes.length !== baseTheme.shapes.length) return true;
+    if (customShapes.length !== resolvedBaseConfig.finalConfig.shapes.length) return true;
     
     // Check if any shape has been modified
     for (let i = 0; i < customShapes.length; i++) {
       const custom = customShapes[i];
-      const original = baseTheme.shapes[i];
+      const original = resolvedBaseConfig.finalConfig.shapes[i];
       if (!original) return true;
       
       if (custom.width !== original.width ||
@@ -476,10 +298,7 @@ const MeshGradientDemo: React.FC<MeshGradientDemoProps> = ({
     const config = isCustomMode ? {
       backgroundColor: backgroundColor,
       shapes: customShapes,
-    } : hasCustomizations ? {
-      ...(backgroundColor !== ALL_THEMES[selectedTheme]?.backgroundColor && { backgroundColor }),
-      ...(customShapes !== ALL_THEMES[selectedTheme]?.shapes && { shapes: customShapes }),
-    } : {};
+    } : getCurrentCustomConfig();
     
     onCustomConfigChange?.(true, config);
   }, [backgroundColor, isCustomMode, selectedTheme, customShapes, hasCustomizations, onCustomConfigChange]);
@@ -498,21 +317,23 @@ const MeshGradientDemo: React.FC<MeshGradientDemoProps> = ({
         return {}; // No customizations, return empty config
       }
       
+      // Get resolved theme defaults for comparison
+      const resolvedBaseConfig = resolveConfig({ shape: displayMode }, baseTheme);
       const config: Partial<BackgroundConfig> = {};
       
       // Include background color if different
-      if (backgroundColor !== baseTheme.backgroundColor) {
+      if (backgroundColor !== resolvedBaseConfig.finalConfig.backgroundColor) {
         config.backgroundColor = backgroundColor;
       }
       
       // Include shapes if different
       const currentShapes = shapes || customShapes;
-      let shapesChanged = currentShapes.length !== baseTheme.shapes.length;
+      let shapesChanged = currentShapes.length !== resolvedBaseConfig.finalConfig.shapes.length;
       
       if (!shapesChanged) {
         for (let i = 0; i < currentShapes.length; i++) {
           const custom = currentShapes[i];
-          const original = baseTheme.shapes[i];
+          const original = resolvedBaseConfig.finalConfig.shapes[i];
           if (!original || 
               custom.width !== original.width ||
               custom.height !== original.height ||

@@ -33,7 +33,7 @@ export type EllipseConfig = ShapeConfig;
 // Complete background configuration
 export interface BackgroundConfig {
   shapes: ShapeConfig[];
-  backgroundColor?: string;
+  backgroundColor: string;
   containerStyle?: React.CSSProperties;
 }
 
