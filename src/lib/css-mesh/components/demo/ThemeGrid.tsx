@@ -1,0 +1,92 @@
+import React from 'react';
+import MeshGradient from '../MeshGradient';
+import { THEME_NAMES, ALL_THEMES, isLightTheme } from '../../themes';
+
+interface ThemeGridProps {
+  selectedTheme: string;
+  onThemeChange: (theme: string) => void;
+  mainTextColor: string;
+}
+
+const ThemeGrid: React.FC<ThemeGridProps> = ({
+  selectedTheme,
+  onThemeChange,
+  mainTextColor,
+}) => {
+  const getTextColorForTheme = (theme: string) => {
+    return isLightTheme(theme) ? '#2d3436' : 'white';
+  };
+
+  const demoCardStyle: React.CSSProperties = {
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    backdropFilter: 'blur(10px)',
+    WebkitBackdropFilter: 'blur(10px)',
+    transform: 'translate3d(0, 0, 0)', // Force GPU acceleration
+    border: '1px solid rgba(255, 255, 255, 0.2)',
+    borderRadius: '16px',
+    padding: '24px',
+    margin: 0,
+    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
+    height: '100%',
+    minHeight: 'auto',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'center',
+    fontSize: '0.9rem',
+  };
+
+  return (
+    <>
+      <h2 style={{ color: mainTextColor, textAlign: 'center', marginBottom: '30px', fontSize: '2rem' }}>
+        All {THEME_NAMES.length} Available Themes
+      </h2>
+      
+      <div style={{ 
+        display: 'grid', 
+        gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', 
+        gap: '20px',
+        marginBottom: '40px'
+      }}>
+        {THEME_NAMES.map(themeName => (
+          <div 
+            key={themeName} 
+            style={{ 
+              height: '200px', 
+              borderRadius: '12px', 
+              overflow: 'hidden',
+              cursor: 'pointer',
+              transition: 'transform 0.2s ease',
+              border: selectedTheme === themeName ? '3px solid #fff' : '1px solid rgba(255,255,255,0.1)',
+            }}
+            onClick={() => onThemeChange(themeName)}
+            onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.02)'}
+            onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+          >
+            <MeshGradient theme={themeName}>
+              <div style={{
+                ...demoCardStyle,
+                color: getTextColorForTheme(themeName),
+              }}>
+                <h3 style={{ fontSize: '1.4rem', marginBottom: '8px', color: getTextColorForTheme(themeName) }}>
+                  {themeName.charAt(0).toUpperCase() + themeName.slice(1)}
+                </h3>
+                <p style={{ opacity: 0.8, fontSize: '0.9rem', color: getTextColorForTheme(themeName) }}>
+                  {ALL_THEMES[themeName]?.shapes.length || 0} ellipse{(ALL_THEMES[themeName]?.shapes.length || 0) > 1 ? 's' : ''}
+                </p>
+                {selectedTheme === themeName && (
+                  <p style={{ fontSize: '0.8rem', marginTop: '8px', fontWeight: 'bold', color: getTextColorForTheme(themeName) }}>
+                    ← Page Background
+                  </p>
+                )}
+              </div>
+            </MeshGradient>
+          </div>
+        ))}
+      </div>
+    </>
+  );
+};
+
+export default ThemeGrid; 

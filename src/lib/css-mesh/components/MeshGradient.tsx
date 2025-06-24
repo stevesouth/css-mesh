@@ -1,0 +1,253 @@
+import React, { useRef, useEffect, useState } from 'react';
+import type { MeshGradientProps } from '../types/component.types';
+import type { BackgroundConfig } from '../types/theme.types';
+import type { AnimationType, ContainerAnimationType } from '../types/animation.types';
+import type { ShapeType, ShapeProperties } from '../types/theme.types';
+import { getTheme } from '../themes';
+import { generateAnimationKeyframes, getAnimationStyles, generateContainerAnimationKeyframes, getContainerAnimationStyles } from '../animations';
+import { generateShapeStyles } from '../utils/shape-generator';
+
+const MeshGradient: React.FC<MeshGradientProps> = ({
+  theme = 'sunset',
+  customConfig,
+  className = '',
+  style = {},
+  children,
+  animated = false,
+  animationType = 'float',
+  animationConfig,
+  containerAnimation = 'none',
+  containerAnimationConfig,
+  mouseTracking,
+  visualEffects,
+  // onThemeChange, // TODO: Implement callback functionality
+  performance = 'auto',
+}) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [containerHeight, setContainerHeight] = useState(400); // Default fallback
+  const [mousePosition, setMousePosition] = useState({ x: 50, y: 50 }); // Percentage-based position
+
+  // Update container height when component mounts or resizes
+  useEffect(() => {
+    const updateHeight = () => {
+      if (containerRef.current) {
+        setContainerHeight(containerRef.current.offsetHeight);
+      }
+    };
+
+    updateHeight();
+    
+    // Listen for resize events
+    const resizeObserver = new ResizeObserver(updateHeight);
+    if (containerRef.current) {
+      resizeObserver.observe(containerRef.current);
+    }
+
+    return () => resizeObserver.disconnect();
+  }, []);
+
+  // Mouse tracking setup
+  useEffect(() => {
+    if (!mouseTracking?.enabled || !containerRef.current) return;
+
+    const handleMouseMove = (event: MouseEvent) => {
+      if (!containerRef.current) return;
+      
+      const rect = containerRef.current.getBoundingClientRect();
+      const x = ((event.clientX - rect.left) / rect.width) * 100;
+      const y = ((event.clientY - rect.top) / rect.height) * 100;
+      
+      setMousePosition({ x: Math.max(0, Math.min(100, x)), y: Math.max(0, Math.min(100, y)) });
+    };
+
+    const container = containerRef.current;
+    container.addEventListener('mousemove', handleMouseMove);
+    container.addEventListener('mouseenter', handleMouseMove);
+    
+    // Reset to center when mouse leaves
+    const handleMouseLeave = () => {
+      setMousePosition({ x: 50, y: 50 });
+    };
+    container.addEventListener('mouseleave', handleMouseLeave);
+
+    return () => {
+      container.removeEventListener('mousemove', handleMouseMove);
+      container.removeEventListener('mouseenter', handleMouseMove);
+      container.removeEventListener('mouseleave', handleMouseLeave);
+    };
+  }, [mouseTracking?.enabled]);
+
+  // Get the base theme configuration
+  const baseTheme = getTheme(theme);
+  
+  if (!baseTheme) {
+    console.warn(`Theme "${theme}" not found, falling back to sunset`);
+    const fallbackTheme = getTheme('sunset');
+    if (!fallbackTheme) {
+      throw new Error('Fallback theme "sunset" not found');
+    }
+  }
+  
+  const selectedTheme = baseTheme || getTheme('sunset')!;
+  
+  // Merge with custom configuration if provided
+  const finalConfig: BackgroundConfig = {
+    backgroundColor: customConfig?.backgroundColor || selectedTheme.backgroundColor,
+    shapes: customConfig?.shapes || selectedTheme.shapes,
+    containerStyle: customConfig?.containerStyle || {},
+  };
+
+  // Determine animation type
+  const effectiveAnimationType: AnimationType = animated ? animationType : 'none';
+  const effectiveContainerAnimation: ContainerAnimationType = containerAnimation;
+  
+  // Apply performance optimizations
+  const optimizedShapes = performance === 'low' 
+    ? finalConfig.shapes.slice(0, 3) // Limit to 3 shapes for low performance
+    : finalConfig.shapes;
+
+  // Generate container animation styles
+  const containerAnimationStyles = getContainerAnimationStyles(
+    effectiveContainerAnimation,
+    containerAnimationConfig?.duration || 10
+  );
+
+  const containerStyles: React.CSSProperties = {
+    position: 'relative',
+    width: '100%',
+    height: '100%',
+    backgroundColor: finalConfig.backgroundColor,
+    overflow: 'hidden',
+    transform: 'translate3d(0, 0, 0)', // Force GPU acceleration for the container
+    ...finalConfig.containerStyle,
+    ...containerAnimationStyles,
+    ...style,
+  };
+
+  const getShapeBaseStyles = (shape: ShapeType = 'ellipse', shapeProps: ShapeProperties = {}) => {
+    return generateShapeStyles(shape, shapeProps);
+  };
+
+  // Generate animation keyframes if needed, with intensity scaling
+  const intensity = animationConfig?.intensity || 1;
+  const animationKeyframes = generateAnimationKeyframes(effectiveAnimationType, intensity);
+  const containerKeyframes = generateContainerAnimationKeyframes(effectiveContainerAnimation);
+
+  // Convert percentage blur to pixels based on container height
+  const getBlurInPixels = (blurPercentage: number): number => {
+    return Math.round((blurPercentage / 100) * containerHeight);
+  };
+
+
+
+  // Calculate mouse effect on ellipse position
+  const getMouseOffset = (ellipseX: number, ellipseY: number): { x: number; y: number } => {
+    if (!mouseTracking?.enabled) return { x: 0, y: 0 };
+
+    const config = {
+      mode: mouseTracking.mode || 'attract',
+      intensity: mouseTracking.intensity || 0.3,
+      radius: mouseTracking.radius || 30,
+    };
+
+    // Calculate distance from mouse to ellipse center
+    const dx = mousePosition.x - ellipseX;
+    const dy = mousePosition.y - ellipseY;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+
+    // Check if ellipse is within effect radius
+    if (distance > config.radius) return { x: 0, y: 0 };
+
+    // Calculate effect strength (stronger when closer)
+    const strength = (1 - distance / config.radius) * config.intensity;
+    
+    // Calculate direction multiplier
+    const direction = config.mode === 'attract' ? 1 : -1;
+    
+    // Calculate offset (normalize direction and apply strength)
+    const offsetX = (dx / distance) * strength * direction * 10; // 10% max offset
+    const offsetY = (dy / distance) * strength * direction * 10;
+
+    return { x: offsetX || 0, y: offsetY || 0 };
+  };
+
+  return (
+    <div 
+      ref={containerRef}
+      data-testid="mesh-gradient"
+      className={`css-mesh ${className}`} 
+      style={containerStyles}
+    >
+      {/* Inject animation keyframes */}
+      {(animationKeyframes || containerKeyframes) && (
+        <style>
+          {animationKeyframes}
+          {containerKeyframes}
+        </style>
+      )}
+      
+      {optimizedShapes.map((shape, index) => {
+        const animationStyles = getAnimationStyles(
+          effectiveAnimationType, 
+          index,
+          animationConfig?.duration
+        );
+        
+        const blurInPixels = getBlurInPixels(shape.blur);
+        const shapeType = shape.shape || 'ellipse';
+        
+        // Calculate mouse effect offset
+        const mouseOffset = getMouseOffset(shape.x + shape.width / 2, shape.y + shape.height / 2);
+        
+        // Apply visual effects to the filter (all shapes use standard filter now)
+        const effects = visualEffects || { saturation: 1, contrast: 1, brightness: 1, hue: 0 };
+        const filterEffects = `blur(${blurInPixels}px) saturate(${effects.saturation}) contrast(${effects.contrast}) brightness(${effects.brightness}) hue-rotate(${effects.hue}deg)`;
+        
+        // Combine GPU acceleration with animation and mouse transforms
+        const mouseTransform = mouseOffset.x !== 0 || mouseOffset.y !== 0 
+          ? `translate(${mouseOffset.x}%, ${mouseOffset.y}%)` 
+          : '';
+        
+        const baseTransform = 'translate3d(0, 0, 0)';
+        const animTransform = animationStyles.transform || '';
+        const finalTransform = [baseTransform, animTransform, mouseTransform]
+          .filter(Boolean)
+          .join(' ');
+        
+        // Generate shape-specific styles
+        const shapeStyles = getShapeBaseStyles(shapeType, shape.shapeProps || {});
+        
+        return (
+          <div
+            key={shape.id}
+            data-testid={`mesh-ellipse-${shape.id}`}
+            style={{
+              ...shapeStyles,
+              width: `${shape.width}%`,
+              height: `${shape.height}%`,
+              left: `${shape.x}%`,
+              top: `${shape.y}%`,
+              background: shape.gradient,
+              filter: filterEffects,
+              opacity: shape.opacity || 1,
+              zIndex: shape.zIndex || index,
+              ...animationStyles,
+              // Override any transform from animationStyles to include mouse effects
+              transform: finalTransform,
+              // Smooth transitions for mouse effects
+              transition: mouseTracking?.enabled ? 'transform 0.1s ease-out' : undefined,
+            }}
+          />
+        );
+      })}
+      
+      {children && (
+        <div style={{ position: 'relative', zIndex: 1000 }}>
+          {children}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default MeshGradient; 
