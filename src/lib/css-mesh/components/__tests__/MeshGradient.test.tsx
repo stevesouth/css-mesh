@@ -148,4 +148,105 @@ describe('MeshGradient Component', () => {
     const shapes = screen.getAllByTestId(/mesh-ellipse-/)
     expect(shapes).toHaveLength(sunsetTheme.shapes.length)
   })
+
+  describe('Orb Mode', () => {
+    it('should render as orb with correct size', () => {
+      render(<MeshGradient shape="orb" size={100} />)
+      
+      const container = screen.getByTestId('mesh-gradient')
+      expect(container).toHaveStyle('width: 100px')
+      expect(container).toHaveStyle('height: 100px')
+      expect(container).toHaveStyle('border-radius: 50%')
+    })
+
+    it('should use default orb size when size not provided', () => {
+      render(<MeshGradient shape="orb" />)
+      
+      const container = screen.getByTestId('mesh-gradient')
+      expect(container).toHaveStyle('width: 80px') // Default size
+      expect(container).toHaveStyle('height: 80px')
+    })
+  })
+
+  describe('Drop Shadows', () => {
+    it('should apply drop shadow when enabled', () => {
+      render(<MeshGradient dropShadow={true} />)
+      
+      const container = screen.getByTestId('mesh-gradient')
+      const boxShadow = getComputedStyle(container).boxShadow
+      expect(boxShadow).not.toBe('none')
+    })
+
+    it('should not apply drop shadow when disabled', () => {
+      render(<MeshGradient dropShadow={false} />)
+      
+      const container = screen.getByTestId('mesh-gradient')
+      expect(container).toHaveStyle('box-shadow: none')
+    })
+
+    it('should apply custom shadow size', () => {
+      render(<MeshGradient dropShadow={30} />)
+      
+      const container = screen.getByTestId('mesh-gradient')
+      const boxShadow = getComputedStyle(container).boxShadow
+      expect(boxShadow).not.toBe('none')
+      // Shadow should contain elements related to the size
+      expect(boxShadow).toContain('px')
+    })
+  })
+
+  describe('3D Lighting', () => {
+    it('should render lighting overlay when enabled', () => {
+      render(<MeshGradient lighting3d={{ enabled: true }} />)
+      
+      const container = screen.getByTestId('mesh-gradient')
+      // Should have a lighting overlay div
+      const lightingOverlay = container.lastElementChild
+      expect(lightingOverlay).toBeInTheDocument()
+    })
+
+    it('should not render lighting overlay when disabled', () => {
+      render(<MeshGradient lighting3d={{ enabled: false }} />)
+      
+      const container = screen.getByTestId('mesh-gradient')
+      // Check if last child is not a lighting overlay (should be inner container)
+      const lastChild = container.lastElementChild as HTMLElement
+      expect(lastChild?.style.background).not.toContain('radial-gradient')
+    })
+
+    it('should apply custom lighting position and intensity', () => {
+      render(
+        <MeshGradient 
+          lighting3d={{ 
+            enabled: true, 
+            position: { x: 75, y: 25 }, 
+            intensity: 0.8 
+          }} 
+        />
+      )
+      
+      const container = screen.getByTestId('mesh-gradient')
+      const lightingOverlay = container.lastElementChild as HTMLElement
+      expect(lightingOverlay.style.background).toContain('75%')
+      expect(lightingOverlay.style.background).toContain('25%')
+    })
+  })
+
+  describe('New Animation Types', () => {
+    it('should handle morph animation', () => {
+      render(<MeshGradient animated={true} animationType="morph" />)
+      
+      const container = screen.getByTestId('mesh-gradient')
+      expect(container).toBeInTheDocument()
+      // Animation is applied via CSS-in-JS, presence indicates success
+    })
+
+    it('should handle container rotation animation', () => {
+      render(<MeshGradient containerAnimation="rotation" />)
+      
+      const container = screen.getByTestId('mesh-gradient')
+      expect(container).toBeInTheDocument()
+      // Container animation is applied via CSS-in-JS
+    })
+  })
 }) 

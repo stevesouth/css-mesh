@@ -111,6 +111,12 @@ const MeshGradient: React.FC<MeshGradientProps> = ({
   const defaultLighting3d = selectedTheme.lighting3d || { enabled: false };
   const finalLighting3d = lighting3d || defaultLighting3d;
 
+  // Use theme's drop shadow as default, allow override via props
+  const themeDropShadow = selectedTheme.dropShadow;
+  const finalDropShadow = dropShadow !== undefined ? dropShadow : (themeDropShadow?.enabled ? (themeDropShadow.size || true) : false);
+  const finalDropShadowOpacity = dropShadowOpacity !== undefined ? dropShadowOpacity : (themeDropShadow?.opacity || 0.4);
+  const finalDropShadowDirection = dropShadowDirection !== undefined ? dropShadowDirection : (themeDropShadow?.direction || { x: 0, y: 8 });
+
   // Determine animation type
   const effectiveAnimationType: AnimationType = animated ? animationType : 'none';
   const effectiveContainerAnimation: ContainerAnimationType = containerAnimation;
@@ -145,11 +151,11 @@ const MeshGradient: React.FC<MeshGradientProps> = ({
 
   // Generate drop shadow styles
   const getDropShadowStyles = (): string => {
-    if (!dropShadow) return 'none';
+    if (!finalDropShadow) return 'none';
     
-    const shadowSize = typeof dropShadow === 'number' ? dropShadow : (isOrb ? orbSize! * 0.2 : 20);
-    const opacity = dropShadowOpacity;
-    const direction = dropShadowDirection;
+    const shadowSize = typeof finalDropShadow === 'number' ? finalDropShadow : (isOrb ? orbSize! * 0.2 : 20);
+    const opacity = finalDropShadowOpacity;
+    const direction = finalDropShadowDirection;
     
     // Create layered shadows for realistic depth with configurable direction
     const shadows = [
@@ -253,6 +259,7 @@ const MeshGradient: React.FC<MeshGradientProps> = ({
         position: 'relative',
         width: isOrb ? `${orbSize}px` : '100%',
         height: isOrb ? `${orbSize}px` : '100%',
+        backgroundColor: finalConfig.backgroundColor, // Apply background to outer container for tests and visual consistency
         boxShadow: getDropShadowStyles(), // Apply shadow to outer container so it doesn't rotate
         borderRadius: isOrb ? '50%' : undefined, // Match inner container shape for shadows
         ...style,

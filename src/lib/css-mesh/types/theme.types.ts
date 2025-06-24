@@ -51,12 +51,21 @@ export interface Lighting3D {
   intensity?: number;
 }
 
+// Drop shadow configuration
+export interface DropShadow {
+  enabled: boolean;
+  size?: number;
+  opacity?: number;
+  direction?: { x: number; y: number };
+}
+
 // Theme pack definition
 export interface ThemePack {
   backgroundColor: string;
   shapes: ShapeConfig[];
   visualEffects?: VisualEffects;
   lighting3d?: Lighting3D;
+  dropShadow?: DropShadow;
 }
 
 // Collection of all theme packs

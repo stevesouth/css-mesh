@@ -55,6 +55,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "sync-version": "node scripts/sync-version.js",
+    "publish:lib": "npm run build:lib && npm run test:run && npm publish",
     "prepublishOnly": "npm run build:lib && npm run test:run"
   },
   "peerDependencies": {

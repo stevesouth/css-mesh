@@ -15,6 +15,14 @@ export const ORB_THEMES: ThemeCollection = {
     },
     lighting3d: {
       enabled: true,
+      position: { x: 30, y: 30 },
+      intensity: 0.75,
+    },
+    dropShadow: {
+      enabled: true,
+      size: 20,
+      opacity: 0.15,
+      direction: { x: 0, y: -3 },
     },
     shapes: [
       {
@@ -74,6 +82,14 @@ export const ORB_THEMES: ThemeCollection = {
     },
     lighting3d: {
       enabled: true,
+      position: { x: 30, y: 30 },
+      intensity: 0.75,
+    },
+    dropShadow: {
+      enabled: true,
+      size: 20,
+      opacity: 0.15,
+      direction: { x: 0, y: -3 },
     },
     shapes: [
       {
@@ -133,6 +149,14 @@ export const ORB_THEMES: ThemeCollection = {
     },
     lighting3d: {
       enabled: true,
+      position: { x: 30, y: 30 },
+      intensity: 0.75,
+    },
+    dropShadow: {
+      enabled: true,
+      size: 20,
+      opacity: 0.15,
+      direction: { x: 0, y: -3 },
     },
     shapes: [
       {
@@ -192,6 +216,14 @@ export const ORB_THEMES: ThemeCollection = {
     },
     lighting3d: {
       enabled: true,
+      position: { x: 30, y: 30 },
+      intensity: 0.75,
+    },
+    dropShadow: {
+      enabled: true,
+      size: 20,
+      opacity: 0.15,
+      direction: { x: 0, y: -3 },
     },
     shapes: [
       {
@@ -251,6 +283,14 @@ export const ORB_THEMES: ThemeCollection = {
     },
     lighting3d: {
       enabled: true,
+      position: { x: 30, y: 30 },
+      intensity: 0.75,
+    },
+    dropShadow: {
+      enabled: true,
+      size: 20,
+      opacity: 0.15,
+      direction: { x: 0, y: -3 },
     },
     shapes: [
       {
@@ -312,6 +352,14 @@ export const ORB_THEMES: ThemeCollection = {
     },
     lighting3d: {
       enabled: true,
+      position: { x: 30, y: 30 },
+      intensity: 0.75,
+    },
+    dropShadow: {
+      enabled: true,
+      size: 20,
+      opacity: 0.15,
+      direction: { x: 0, y: -3 },
     },
     shapes: [
       {
@@ -371,6 +419,14 @@ export const ORB_THEMES: ThemeCollection = {
     },
     lighting3d: {
       enabled: true,
+      position: { x: 30, y: 30 },
+      intensity: 0.75,
+    },
+    dropShadow: {
+      enabled: true,
+      size: 20,
+      opacity: 0.15,
+      direction: { x: 0, y: -3 },
     },
     shapes: [
       {
@@ -430,6 +486,14 @@ export const ORB_THEMES: ThemeCollection = {
     },
     lighting3d: {
       enabled: true,
+      position: { x: 30, y: 30 },
+      intensity: 0.75,
+    },
+    dropShadow: {
+      enabled: true,
+      size: 20,
+      opacity: 0.15,
+      direction: { x: 0, y: -3 },
     },
     shapes: [
       {
@@ -489,6 +553,14 @@ export const ORB_THEMES: ThemeCollection = {
     },
     lighting3d: {
       enabled: true,
+      position: { x: 30, y: 30 },
+      intensity: 0.75,
+    },
+    dropShadow: {
+      enabled: true,
+      size: 20,
+      opacity: 0.15,
+      direction: { x: 0, y: -3 },
     },
     shapes: [
       {
@@ -548,6 +620,14 @@ export const ORB_THEMES: ThemeCollection = {
     },
     lighting3d: {
       enabled: true,
+      position: { x: 30, y: 30 },
+      intensity: 0.75,
+    },
+    dropShadow: {
+      enabled: true,
+      size: 20,
+      opacity: 0.15,
+      direction: { x: 0, y: -3 },
     },
     shapes: [
       {
@@ -612,6 +692,12 @@ export const ORB_THEMES: ThemeCollection = {
       position: { x: 75, y: 15 },
       intensity: 0.85,
     },
+    dropShadow: {
+      enabled: true,
+      size: 20,
+      opacity: 0.15,
+      direction: { x: 0, y: -3 },
+    },
     shapes: [
       {
         id: 'sunset-glow-1',
@@ -672,6 +758,12 @@ export const ORB_THEMES: ThemeCollection = {
       enabled: true,
       position: { x: 70, y: 20 },
       intensity: 0.75,
+    },
+    dropShadow: {
+      enabled: true,
+      size: 20,
+      opacity: 0.15,
+      direction: { x: 0, y: -3 },
     },
     shapes: [
       {
@@ -734,6 +826,12 @@ export const ORB_THEMES: ThemeCollection = {
       position: { x: 80, y: 10 },
       intensity: 0.9,
     },
+    dropShadow: {
+      enabled: true,
+      size: 20,
+      opacity: 0.15,
+      direction: { x: 0, y: -3 },
+    },
     shapes: [
       {
         id: 'twilight-1',
@@ -794,6 +892,12 @@ export const ORB_THEMES: ThemeCollection = {
       enabled: true,
       position: { x: 85, y: 5 },
       intensity: 1.0,
+    },
+    dropShadow: {
+      enabled: true,
+      size: 20,
+      opacity: 0.15,
+      direction: { x: 0, y: -3 },
     },
     shapes: [
       {

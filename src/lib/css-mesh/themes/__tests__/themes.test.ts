@@ -61,8 +61,8 @@ describe('Theme Utilities', () => {
       })
     })
 
-    it('should have 20 themes total', () => {
-      expect(THEME_NAMES).toHaveLength(20)
+    it('should have 34 themes total', () => {
+      expect(THEME_NAMES).toHaveLength(34)
     })
   })
 

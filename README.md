@@ -65,6 +65,8 @@ function ChatBot() {
 
 ![CSS Mesh Demo Interface](./public/screenshot.png)
 
+![CSS Mesh Orb Mode](./public/orb-mode.png)
+
 ## 📦 Installation
 
 ```bash
